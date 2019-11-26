@@ -1,186 +1,261 @@
 /// @file
-/// @version 4.0
+/// @version 5.2
 /// 
 /// @section LICENSE
 /// 
 /// This program is free software; you can redistribute it and/or modify it under
 /// the terms of the BSD license: http://opensource.org/licenses/BSD-3-Clause
 
-#define __HL_INCLUDE_PLATFORM_HEADERS
-#include <hltypes/hplatform.h>
+#include <d3d9.h>
 
-#include <gl/GL.h>
-#define GL_GLEXT_PROTOTYPES
-#include <gl/glext.h>
-
+#include <april/april.h>
+#include <april/Color.h>
+#include <april/Image.h>
 #include <hltypes/hlog.h>
 #include <hltypes/hstring.h>
-#include <april/RenderState.h>
 
 #include "CustomRenderSystem.h"
 #include "CustomTexture.h"
 
-#define CUSTOM_RENDERSYS ((CustomRenderSystem*)april::rendersys)
+#define CUSTOM_DEVICE (((CustomRenderSystem*)april::rendersys)->d3dDevice)
 
-CustomTexture::CustomTexture(bool fromResource) : Texture(fromResource), textureId(0), glFormat(0), internalFormat(0)
+namespace april
 {
-}
+	CustomTexture::CustomTexture(bool fromResource) :
+		Texture(fromResource),
+		d3dTexture(NULL),
+		d3dSurface(NULL),
+		d3dFormat(D3DFMT_UNKNOWN)
+	{
+	}
 
-CustomTexture::~CustomTexture()
-{
-}
+	void* CustomTexture::getBackendId() const
+	{
+		return (void*)this->d3dTexture;
+	}
 
-bool CustomTexture::_deviceCreateTexture(unsigned char* data, int size)
-{
-	glGenTextures(1, &this->textureId);
-	if (this->textureId == 0)
+	bool CustomTexture::_deviceCreateTexture(unsigned char* data, int size)
 	{
-		return false;
-	}
-	this->firstUpload = true;
-	return true;
-}
-
-bool CustomTexture::_deviceDestroyTexture()
-{
-	if (this->textureId != 0)
-	{
-		glDeleteTextures(1, &this->textureId);
-		this->textureId = 0;
-		return true;
-	}
-	return false;
-}
-
-void CustomTexture::_assignFormat()
-{
-	if (this->format == april::Image::Format::ARGB || this->format == april::Image::Format::XRGB || this->format == april::Image::Format::RGBA ||
-		this->format == april::Image::Format::RGBX || this->format == april::Image::Format::ABGR || this->format == april::Image::Format::XBGR)
-	{
-		this->glFormat = this->internalFormat = GL_RGBA;
-	}
-	else if (this->format == april::Image::Format::BGRA || this->format == april::Image::Format::BGRX)
-	{
-		this->glFormat = GL_RGBA;
-		this->internalFormat = GL_RGBA;
-	}
-	else if (this->format == april::Image::Format::RGB)
-	{
-		this->glFormat = this->internalFormat = GL_RGB;
-	}
-	else if (this->format == april::Image::Format::BGR)
-	{
-		this->glFormat = GL_RGB;
-		this->internalFormat = GL_RGB;
-	}
-	else if (this->format == april::Image::Format::Alpha)
-	{
-		this->glFormat = this->internalFormat = GL_ALPHA;
-	}
-	else if (this->format == april::Image::Format::Greyscale)
-	{
-		this->glFormat = this->internalFormat = GL_LUMINANCE;
-	}
-	else if (this->format == april::Image::Format::Compressed)
-	{
-		this->glFormat = this->internalFormat = 0; // compressed image formats will set these values as they need to
-	}
-	else if (this->format == april::Image::Format::Palette)
-	{
-		this->glFormat = this->internalFormat = 0; // paletted image formats will set these values as they need to
-	}
-	else
-	{
-		this->glFormat = this->internalFormat = GL_RGBA;
-	}
-}
-
-void CustomTexture::_setCurrentTexture()
-{
-	CUSTOM_RENDERSYS->deviceState->texture = this;
-	CUSTOM_RENDERSYS->_setDeviceTexture(this);
-	CUSTOM_RENDERSYS->_setDeviceTextureFilter(this->filter);
-	CUSTOM_RENDERSYS->_setDeviceTextureAddressMode(this->addressMode);
-}
-
-april::Texture::Lock CustomTexture::_tryLockSystem(int x, int y, int w, int h)
-{
-	april::Texture::Lock lock;
-	april::Image::Format nativeFormat = april::rendersys->getNativeTextureFormat(this->format);
-	lock.activateLock(0, 0, w, h, x, y, new unsigned char[w * h * nativeFormat.getBpp()], w, h, nativeFormat);
-	lock.systemBuffer = lock.data;
-	return lock;
-}
-
-bool CustomTexture::_unlockSystem(Lock& lock, bool update)
-{
-	if (lock.systemBuffer == NULL)
-	{
-		return false;
-	}
-	if (update)
-	{
-		if (this->format != april::Image::Format::Compressed && this->format != april::Image::Format::Palette)
+		this->d3dPool = D3DPOOL_DEFAULT;
+		this->d3dUsage = 0;
+		// some GPUs seem to have problems creating off-screen A8 surfaces when D3DPOOL_DEFAULT is used so this special hack is used
+		if (!((CustomRenderSystem*)april::rendersys)->_supportsA8Surface && this->d3dFormat == D3DFMT_A8)
 		{
-			this->_setCurrentTexture();
-			if (this->width == lock.w && this->height == lock.h)
-			{
-				glTexImage2D(GL_TEXTURE_2D, 0, this->internalFormat, this->width, this->height, 0, this->glFormat, GL_UNSIGNED_BYTE, lock.data);
-			}
-			else
-			{
-				if (this->firstUpload)
-				{
-					this->_uploadClearData();
-				}
-				glTexSubImage2D(GL_TEXTURE_2D, 0, lock.dx, lock.dy, lock.w, lock.h, this->glFormat, GL_UNSIGNED_BYTE, lock.data);
-			}
-		}
-		delete[] lock.data;
-		this->firstUpload = false;
-	}
-	return update;
-}
-
-bool CustomTexture::_uploadToGpu(int sx, int sy, int sw, int sh, int dx, int dy, unsigned char* srcData, int srcWidth, int srcHeight, april::Image::Format srcFormat)
-{
-	if (this->format == april::Image::Format::Compressed || this->format == april::Image::Format::Palette)
-	{
-		return false;
-	}
-	this->_setCurrentTexture();
-	if (sx == 0 && dx == 0 && sy == 0 && dy == 0 && sw == this->width && srcWidth == this->width && sh == this->height && srcHeight == this->height)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, this->internalFormat, this->width, this->height, 0, this->glFormat, GL_UNSIGNED_BYTE, srcData);
-	}
-	else
-	{
-		if (this->firstUpload)
-		{
-			this->_uploadClearData();
-		}
-		int srcBpp = srcFormat.getBpp();
-		if (sx == 0 && dx == 0 && srcWidth == this->width && sw == this->width)
-		{
-			glTexSubImage2D(GL_TEXTURE_2D, 0, dx, dy, sw, sh, this->glFormat, GL_UNSIGNED_BYTE, &srcData[(sx + sy * srcWidth) * srcBpp]);
+			this->d3dPool = D3DPOOL_MANAGED;
 		}
 		else
 		{
-			for_iter(j, 0, sh)
+			if (this->type == Type::RenderTarget)
 			{
-				glTexSubImage2D(GL_TEXTURE_2D, 0, dx, (dy + j), sw, 1, this->glFormat, GL_UNSIGNED_BYTE, &srcData[(sx + (sy + j) * srcWidth) * srcBpp]);
+				this->d3dUsage = D3DUSAGE_RENDERTARGET;
+			}
+			else if (this->type != Type::Immutable)
+			{
+				this->d3dUsage = D3DUSAGE_DYNAMIC;
 			}
 		}
+		HRESULT hr = CUSTOM_DEVICE->CreateTexture(this->width, this->height, 1, this->d3dUsage, this->d3dFormat, this->d3dPool, &this->d3dTexture, NULL);
+		if (hr == D3DERR_OUTOFVIDEOMEMORY)
+		{
+			static bool _preventRecursion = false;
+			if (!_preventRecursion)
+			{
+				_preventRecursion = true;
+				april::window->handleLowMemoryWarning();
+				_preventRecursion = false;
+				hr = CUSTOM_DEVICE->CreateTexture(this->width, this->height, 1, this->d3dUsage, this->d3dFormat, this->d3dPool, &this->d3dTexture, NULL);
+			}
+			if (hr == D3DERR_OUTOFVIDEOMEMORY)
+			{
+				hlog::error(logTag, "Failed to create DX9 texture: Not enough VRAM!");
+				return false;
+			}
+		}
+		if (FAILED(hr))
+		{
+			RenderSystem::Caps caps = april::rendersys->getCaps();
+			// maybe it failed, because NPOT textures aren't supported
+			if (!caps.npotTexturesLimited && !caps.npotTextures)
+			{
+				int w = this->width;
+				int h = this->height;
+				this->_setupPot(w, h);
+				hr = CUSTOM_DEVICE->CreateTexture(w, h, 1, this->d3dUsage, this->d3dFormat, this->d3dPool, &this->d3dTexture, NULL);
+				if (!FAILED(hr) && data != NULL)
+				{
+					unsigned char* newData = this->_createPotData(w, h, data);
+					this->_rawWrite(0, 0, w, h, 0, 0, newData, w, h, this->format);
+					delete[] newData;
+					this->firstUpload = false;
+				}
+			}
+			if (FAILED(hr))
+			{
+				hlog::error(logTag, "Failed to create DX9 texture!");
+				return false;
+			}
+		}
+		return true;
 	}
-	this->firstUpload = false;
-	return true;
-}
+	
+	bool CustomTexture::_deviceDestroyTexture()
+	{
+		if (this->d3dTexture != NULL)
+		{
+			if (this->d3dSurface != NULL)
+			{
+				this->d3dSurface->Release();
+				this->d3dSurface = NULL;
+			}
+			this->d3dTexture->Release();
+			this->d3dTexture = NULL;
+			return true;
+		}
+		return false;
+	}
 
-void CustomTexture::_uploadClearData()
-{
-	int size = this->getByteSize();
-	unsigned char* clearColor = new unsigned char[size];
-	memset(clearColor, 0, size);
-	glTexImage2D(GL_TEXTURE_2D, 0, this->internalFormat, this->width, this->height, 0, this->glFormat, GL_UNSIGNED_BYTE, clearColor);
-	delete[] clearColor;
+	void CustomTexture::_assignFormat()
+	{
+		Image::Format nativeFormat = april::rendersys->getNativeTextureFormat(this->format);
+		if (nativeFormat == Image::Format::BGRA)			this->d3dFormat = D3DFMT_A8R8G8B8;
+		else if (nativeFormat == Image::Format::BGRX)		this->d3dFormat = D3DFMT_X8R8G8B8;
+		else if (nativeFormat == Image::Format::Alpha)		this->d3dFormat = D3DFMT_A8;
+		else if (nativeFormat == Image::Format::Greyscale)	this->d3dFormat = D3DFMT_L8;
+		else if (nativeFormat == Image::Format::Compressed)	this->d3dFormat = D3DFMT_A8R8G8B8; // TODOaa - needs changing, ARGB shouldn't be here
+		else if (nativeFormat == Image::Format::Palette)	this->d3dFormat = D3DFMT_A8R8G8B8; // TODOaa - needs changing, ARGB shouldn't be here
+	}
+
+	IDirect3DSurface9* CustomTexture::_getSurface()
+	{
+		if (this->d3dSurface == NULL)
+		{
+			this->d3dTexture->GetSurfaceLevel(0, &this->d3dSurface);
+		}
+		return this->d3dSurface;
+	}
+
+	Texture::Lock CustomTexture::_tryLockSystem(int x, int y, int w, int h)
+	{
+		Lock lock;
+		D3DLOCKED_RECT lockRect;
+		HRESULT hr;
+		Image::Format nativeFormat = april::rendersys->getNativeTextureFormat(this->format);
+		int nativeBpp = nativeFormat.getBpp();
+		RECT rect;
+		rect.left = x;
+		rect.top = y;
+		rect.right = x + w;
+		rect.bottom = y + h;
+		if (this->d3dPool == D3DPOOL_MANAGED)
+		{
+			hr = this->d3dTexture->LockRect(0, &lockRect, &rect, D3DLOCK_DISCARD);
+			if (!FAILED(hr))
+			{
+				lock.systemBuffer = this->d3dTexture;
+				lock.activateLock(0, 0, w, h, x, y, (unsigned char*)lockRect.pBits, lockRect.Pitch / nativeBpp, h, nativeFormat);
+			}
+			return lock;
+		}
+		IDirect3DSurface9* surface = NULL;
+		if (this->type != Type::RenderTarget)
+		{
+			hr = CUSTOM_DEVICE->CreateOffscreenPlainSurface(w, h, this->d3dFormat, D3DPOOL_SYSTEMMEM, &surface, NULL);
+			if (FAILED(hr))
+			{
+				return lock;
+			}
+			hr = surface->LockRect(&lockRect, NULL, D3DLOCK_DISCARD);
+			if (FAILED(hr))
+			{
+				surface->Release();
+				return lock;
+			}
+			// a D3DLOCKED_RECT always has a "pitch" that is a multiple of 4
+			lock.activateLock(0, 0, w, h, x, y, (unsigned char*)lockRect.pBits, lockRect.Pitch / nativeBpp, h, nativeFormat);
+		}
+		else
+		{
+			hr = CUSTOM_DEVICE->CreateOffscreenPlainSurface(this->width, this->height, this->d3dFormat, D3DPOOL_SYSTEMMEM, &surface, NULL);
+			if (FAILED(hr))
+			{
+				return lock;
+			}
+			hr = CUSTOM_DEVICE->GetRenderTargetData(this->_getSurface(), surface);
+			if (FAILED(hr))
+			{
+				surface->Release();
+				return lock;
+			}
+			hr = surface->LockRect(&lockRect, NULL, D3DLOCK_DISCARD);
+			if (FAILED(hr))
+			{
+				surface->Release();
+				return lock;
+			}
+			// a D3DLOCKED_RECT always has a "pitch" that is a multiple of 4
+			lock.activateLock(x, y, w, h, 0, 0, (unsigned char*)lockRect.pBits, lockRect.Pitch / nativeBpp, this->height, nativeFormat);
+			lock.renderTarget = true;
+		}
+		lock.systemBuffer = surface;
+		return lock;
+	}
+
+	bool CustomTexture::_unlockSystem(Lock& lock, bool update)
+	{
+		if (lock.systemBuffer == NULL)
+		{
+			return false;
+		}
+		if (this->d3dPool == D3DPOOL_MANAGED)
+		{
+			IDirect3DTexture9* texture = (IDirect3DTexture9*)lock.systemBuffer;
+			if (lock.locked)
+			{
+				texture->UnlockRect(0);
+			}
+		}
+		else if (update)
+		{
+			IDirect3DSurface9* surface = (IDirect3DSurface9*)lock.systemBuffer;
+			if (lock.locked)
+			{
+				surface->UnlockRect();
+				if (!lock.renderTarget)
+				{
+					RECT rect;
+					rect.left = lock.x;
+					rect.top = lock.y;
+					rect.right = lock.x + lock.w;
+					rect.bottom = lock.y + lock.h;
+					POINT dest;
+					dest.x = lock.dx;
+					dest.y = lock.dy;
+					CUSTOM_DEVICE->UpdateSurface(surface, &rect, this->_getSurface(), &dest);
+				}
+				else
+				{
+					CUSTOM_DEVICE->UpdateSurface(surface, NULL, this->_getSurface(), NULL);
+				}
+			}
+			surface->Release();
+		}
+		return true;
+	}
+
+	bool CustomTexture::_uploadToGpu(int sx, int sy, int sw, int sh, int dx, int dy, unsigned char* srcData, int srcWidth, int srcHeight, Image::Format srcFormat)
+	{
+		Lock lock = this->_tryLockSystem(dx, dy, sw, sh);
+		if (lock.failed)
+		{
+			return false;
+		}
+		bool result = true;
+		if (srcData != lock.data)
+		{
+			Image::write(sx, sy, sw, sh, lock.x, lock.y, srcData, srcWidth, srcHeight, srcFormat, lock.data, lock.dataWidth, lock.dataHeight, lock.format);
+		}
+		this->_unlockSystem(lock, true);
+		return result;
+	}
+
 }

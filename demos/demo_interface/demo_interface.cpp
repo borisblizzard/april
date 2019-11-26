@@ -93,7 +93,7 @@ class MouseDelegate : public april::MouseDelegate
 void __aprilApplicationInit()
 {
 	srand((unsigned int)htime());
-	april::init(new CustomRenderSystem(), new CustomWindow());
+	april::init(new april::CustomRenderSystem(), new april::CustomWindow());
 	april::createRenderSystem();
 	april::createWindow((int)drawRect.w, (int)drawRect.h, false, "APRIL: Simple Interface");
 	april::window->setUpdateDelegate(&updateDelegate);

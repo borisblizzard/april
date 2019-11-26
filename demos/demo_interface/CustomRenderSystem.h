@@ -1,5 +1,5 @@
 /// @file
-/// @version 4.0
+/// @version 5.2
 /// 
 /// @section LICENSE
 /// 
@@ -9,66 +9,85 @@
 #ifndef CUSTOM_RENDER_SYSTEM_H
 #define CUSTOM_RENDER_SYSTEM_H
 
-#include <april/RenderSystem.h>
-#include <april/Window.h>
+#include <d3d9.h>
+#include <d3d9types.h>
+
+#define __HL_INCLUDE_PLATFORM_HEADERS
 #include <hltypes/hplatform.h>
-#include <hltypes/hstring.h>
 
-#define LOG_TAG "demo_interface"
+#include <april/RenderSystem.h>
 
-class CustomRenderSystem : public april::RenderSystem
+namespace april
 {
-public:
-	friend class CustomTexture;
+	class CustomTexture;
+	class Image;
+	class Window;
 
-	CustomRenderSystem();
-	~CustomRenderSystem();
+	class CustomRenderSystem : public april::RenderSystem
+	{
+	public:
+		friend class CustomTexture;
 
-	inline HDC getHDC() const { return this->hDC; }
+		CustomRenderSystem();
+		~CustomRenderSystem();
 
-	inline int getVRam() const { return 0; }
+		int getVRam() const;
 
-	april::Image::Format getNativeTextureFormat(april::Image::Format format) const;
-	unsigned int getNativeColorUInt(const april::Color& color) const;
+		Image::Format getNativeTextureFormat(Image::Format format) const;
+		unsigned int getNativeColorUInt(const april::Color& color) const;
 
-protected:
-	HWND hWnd;
-	HDC hDC;
-	HGLRC hRC;
+	protected:
+		IDirect3D9* d3d;
+		IDirect3DDevice9* d3dDevice;
+		_D3DPRESENT_PARAMETERS_* d3dpp;
+		IDirect3DSurface9* backBuffer;
+		HWND childHWnd;
 
-	virtual void _releaseWindow();
-	virtual bool _initWin32(april::Window* window);
+		void _deviceInit();
+		bool _deviceCreate(Options options);
+		bool _deviceDestroy();
+		void _deviceAssignWindow(Window* window);
+		void _deviceReset();
+		void _deviceSetupCaps();
+		void _deviceSetup();
+		void _deviceSetupDisplayModes();
 
-	void _deviceInit();
-	bool _deviceCreate(Options options);
-	bool _deviceDestroy();
-	void _deviceAssignWindow(april::Window* window);
-	void _deviceSetupCaps();
-	void _deviceSetup();
+		void _tryAssignChildWindow();
+		void _tryUnassignChildWindow();
 
-	april::Texture* _deviceCreateTexture(bool fromResource);
+		Texture* _deviceCreateTexture(bool fromResource);
 
-	void _setDeviceViewport(cgrecti rect);
-	void _setDeviceModelviewMatrix(const gmat4& matrix);
-	void _setDeviceProjectionMatrix(const gmat4& matrix);
-	void _setDeviceDepthBuffer(bool enabled, bool writeEnabled);
-	void _setDeviceRenderMode(bool useTexture, bool useColor);
-	void _setDeviceTexture(april::Texture* texture);
-	void _setDeviceTextureFilter(const april::Texture::Filter& textureFilter);
-	void _setDeviceTextureAddressMode(const april::Texture::AddressMode& textureAddressMode);
-	void _setDeviceBlendMode(const april::BlendMode& blendMode);
-	void _setDeviceColorMode(const april::ColorMode& colorMode, float colorModeFactor, bool useTexture, bool useColor, const april::Color& systemColor);
+		void _deviceChangeResolution(int width, int height, bool fullscreen);
 
-	void _deviceClear(bool depth);
-	void _deviceClear(const april::Color& color, bool depth);
-	void _deviceClearDepth();
-	void _deviceRender(const april::RenderOperation& renderOperation, const april::PlainVertex* v, int nVertices);
-	void _deviceRender(const april::RenderOperation& renderOperation, const april::TexturedVertex* v, int nVertices);
-	void _deviceRender(const april::RenderOperation& renderOperation, const april::ColoredVertex* v, int nVertices);
-	void _deviceRender(const april::RenderOperation& renderOperation, const april::ColoredTexturedVertex* v, int nVertices);
+		void _setDeviceViewport(cgrecti rect);
+		void _setDeviceModelviewMatrix(const gmat4& matrix);
+		void _setDeviceProjectionMatrix(const gmat4& matrix);
+		void _setDeviceDepthBuffer(bool enabled, bool writeEnabled);
+		void _setDeviceRenderMode(bool useTexture, bool useColor);
+		void _setDeviceTexture(Texture* texture);
+		void _setDeviceTextureFilter(const Texture::Filter& textureFilter);
+		void _setDeviceTextureAddressMode(const Texture::AddressMode& textureAddressMode);
+		void _setDeviceBlendMode(const BlendMode& blendMode);
+		void _setDeviceColorMode(const ColorMode& colorMode, float colorModeFactor, bool useTexture, bool useColor, const Color& systemColor);
+		void _setDeviceRenderTarget(Texture* texture);
 
-	// translation from abstract render ops to gl's render ops
-	static int _glRenderOperations[];
+		void _deviceClear(bool depth);
+		void _deviceClear(const Color& color, bool depth);
+		void _deviceClearDepth();
+		void _deviceRender(const RenderOperation& renderOperation, const PlainVertex* vertices, int count);
+		void _deviceRender(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count);
+		void _deviceRender(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count);
+		void _deviceRender(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count);
+		void _devicePresentFrame(bool systemEnabled);
+		void _deviceCopyRenderTargetData(Texture* source, Texture* destination);
+		void _deviceTakeScreenshot(Image::Format format, bool backBufferOnly);
 
-};
+		static D3DPRIMITIVETYPE _dx9RenderOperations[];
+
+	private:
+		bool _supportsA8Surface; // this does not seem to be detectable via any type of device caps
+
+	};
+
+}
 #endif

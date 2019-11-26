@@ -1,5 +1,5 @@
 /// @file
-/// @version 4.0
+/// @version 5.2
 /// 
 /// @section LICENSE
 /// 
@@ -11,32 +11,41 @@
 
 #include <april/Texture.h>
 
-class CustomRenderSystem;
+struct IDirect3DTexture9;
+struct IDirect3DSurface9;
 
-class CustomTexture : public april::Texture
+namespace april
 {
-public:
-	friend class CustomRenderSystem;
+	class CustomRenderSystem;
 
-	CustomTexture(bool fromResource);
-	~CustomTexture();
+	class CustomTexture : public Texture
+	{
+	public:
+		friend class CustomRenderSystem;
 
-protected:
-	unsigned int textureId;
-	int glFormat;
-	int internalFormat;
+		CustomTexture(bool fromResource);
 
-	void _setCurrentTexture();
+		void* getBackendId() const;
+		
+	protected:
+		IDirect3DSurface9* d3dSurface;
+		IDirect3DTexture9* d3dTexture;
+		D3DFORMAT d3dFormat;
+		D3DPOOL d3dPool;
+		DWORD d3dUsage;
 
-	bool _deviceCreateTexture(unsigned char* data, int size);
-	bool _deviceDestroyTexture();
-	void _assignFormat();
+		bool _deviceCreateTexture(unsigned char* data, int size);
+		bool _deviceDestroyTexture();
+		void _assignFormat();
 
-	april::Texture::Lock _tryLockSystem(int x, int y, int w, int h);
-	bool _unlockSystem(april::Texture::Lock& lock, bool update);
-	bool _uploadToGpu(int sx, int sy, int sw, int sh, int dx, int dy, unsigned char* srcData, int srcWidth, int srcHeight, april::Image::Format srcFormat);
+		IDirect3DSurface9* _getSurface();
 
-	void _uploadClearData();
+		Lock _tryLockSystem(int x, int y, int w, int h);
+		bool _unlockSystem(Lock& lock, bool update);
+		bool _uploadToGpu(int sx, int sy, int sw, int sh, int dx, int dy, unsigned char* srcData, int srcWidth, int srcHeight, Image::Format srcFormat);
 
-};
+	};
+
+}
+
 #endif
