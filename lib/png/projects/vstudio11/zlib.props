@@ -14,7 +14,7 @@
  * source code.
  -->
 
-<Project ToolsVersion="4.0"
+<Project ToolsVersion="14.0"
    xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <!-- Place the name of the directory containing the source of zlib used for
