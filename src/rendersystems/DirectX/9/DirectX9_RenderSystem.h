@@ -43,7 +43,7 @@ namespace april
 		int getVRam() const;
 
 		Image::Format getNativeTextureFormat(Image::Format format) const;
-		unsigned int getNativeColorUInt(const april::Color& color) const;
+		unsigned int getNativeColorUInt(const Color& color) const;
 
 		// TODOa - these need to be refactored
 		void setPixelShader(PixelShader* pixelShader);

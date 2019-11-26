@@ -52,7 +52,7 @@ namespace april
 	CustomWindow::CustomWindow() :
 		Window()
 	{
-		this->name = april::WindowType::Win32.getName();
+		this->name = "Custom";
 		this->hWnd = NULL;
 		this->width = 0;
 		this->height = 0;
@@ -596,7 +596,7 @@ namespace april
 		return CustomWindow::childProcessCallback(hWnd, message, wParam, lParam);
 	}
 
-	static inline april::Key _getKeyFromMessage(UINT message)
+	static inline Key _getKeyFromMessage(UINT message)
 	{
 		if (message == WM_LBUTTONDOWN || message == WM_LBUTTONUP)
 		{

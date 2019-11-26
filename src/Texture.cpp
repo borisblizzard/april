@@ -68,10 +68,6 @@ namespace april
 		this->renderTarget = false;
 	}
 
-	Texture::Lock::~Lock()
-	{
-	}
-
 	void Texture::Lock::activateFail()
 	{
 		this->locked = false;

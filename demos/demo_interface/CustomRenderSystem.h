@@ -23,7 +23,7 @@ namespace april
 	class Image;
 	class Window;
 
-	class CustomRenderSystem : public april::RenderSystem
+	class CustomRenderSystem : public RenderSystem
 	{
 	public:
 		friend class CustomTexture;
@@ -34,7 +34,7 @@ namespace april
 		int getVRam() const;
 
 		Image::Format getNativeTextureFormat(Image::Format format) const;
-		unsigned int getNativeColorUInt(const april::Color& color) const;
+		unsigned int getNativeColorUInt(const Color& color) const;
 
 	protected:
 		IDirect3D9* d3d;

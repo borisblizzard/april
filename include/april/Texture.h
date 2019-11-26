@@ -642,7 +642,7 @@ namespace april
 
 	protected:
 		/// @brief Defines a texture read lock for reading and writing to improve performance.
-		struct Lock
+		struct aprilExport Lock
 		{
 		public:
 			/// @brief Contains a pointer to the system buffer.
@@ -677,8 +677,6 @@ namespace april
 
 			/// @brief Basic constructor.
 			Lock();
-			/// @brief Destructor.
-			~Lock();
 
 			/// @brief Marks the lock as failed.
 			void activateFail();

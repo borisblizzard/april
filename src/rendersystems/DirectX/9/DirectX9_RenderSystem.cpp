@@ -57,7 +57,7 @@ namespace april
 		backBuffer(NULL),
 		childHWnd(0)
 	{
-		this->name = april::RenderSystemType::DirectX9.getName();
+		this->name = RenderSystemType::DirectX9.getName();
 		this->pixelOffset = 0.5f;
 		this->_supportsA8Surface = false;
 		this->caps.renderTarget = true;
@@ -796,7 +796,7 @@ namespace april
 		return Image::Format::Invalid;
 	}
 
-	unsigned int DirectX9_RenderSystem::getNativeColorUInt(const april::Color& color) const
+	unsigned int DirectX9_RenderSystem::getNativeColorUInt(const Color& color) const
 	{
 		return D3DCOLOR_ARGB(color.a, color.r, color.g, color.b);
 	}

@@ -60,7 +60,7 @@ namespace april
 	Win32_Window::Win32_Window() :
 		Window()
 	{
-		this->name = april::WindowType::Win32.getName();
+		this->name = WindowType::Win32.getName();
 		this->hWnd = NULL;
 		this->width = 0;
 		this->height = 0;
@@ -641,7 +641,7 @@ namespace april
 		return Win32_Window::childProcessCallback(hWnd, message, wParam, lParam);
 	}
 
-	static inline april::Key _getKeyFromMessage(UINT message)
+	static inline Key _getKeyFromMessage(UINT message)
 	{
 		if (message == WM_LBUTTONDOWN || message == WM_LBUTTONUP)
 		{
