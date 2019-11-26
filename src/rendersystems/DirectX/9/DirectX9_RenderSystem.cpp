@@ -25,7 +25,6 @@
 #include "Image.h"
 #include "Keys.h"
 #include "Platform.h"
-#include "RenderCommand.h"
 #include "RenderState.h"
 #include "Timer.h"
 #include "Win32_Window.h"

@@ -25,7 +25,6 @@
 namespace april
 {
 	class DirectX9_PixelShader;
-	class DirectX9_RenderState;
 	class DirectX9_Texture;
 	class DirectX9_VertexShader;
 	class Image;
