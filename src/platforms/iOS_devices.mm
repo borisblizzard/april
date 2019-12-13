@@ -116,7 +116,7 @@ void getStaticiOSInfo(chstr name, april::SystemInfo& info)
 		}
 		else
 		{
-			info.name = "iPad ???";
+			info.name = "iPad ??? (" + name + ")";
 			info.displayDpi = 264;
 		}
 	}
@@ -313,7 +313,7 @@ void getStaticiOSInfo(chstr name, april::SystemInfo& info)
 		}
 		else
 		{
-			info.name = "iPhone ???";
+			info.name = "iPhone ??? (" + name + ")";
 			info.displayDpi = 326;
 		}
 	}
@@ -356,7 +356,7 @@ void getStaticiOSInfo(chstr name, april::SystemInfo& info)
 		}
 		else
 		{
-			info.name = "iPod ???";
+			info.name = "iPod ??? (" + name + ")";
 			info.displayDpi = 326;
 		}
 	}
