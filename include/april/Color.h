@@ -261,6 +261,22 @@ namespace april
 			result /= value;
 			return result;
 		}
+		/// @brief Multiplies a Color with a factor.
+		/// @return The resulting Color.
+		inline Color operator*(double value) const
+		{
+			Color result(*this);
+			result *= value;
+			return result;
+		}
+		/// @brief Divides a Color with a factor.
+		/// @return The resulting Color.
+		inline Color operator/(double value) const
+		{
+			Color result(*this);
+			result /= value;
+			return result;
+		}
 		/// @brief Adds another Color to this one.
 		/// @return This modified Color.
 		inline Color operator+=(const Color& other)
@@ -318,6 +334,27 @@ namespace april
 		inline Color operator/=(float value)
 		{
 			float val = 1.0f / value;
+			this->r = (unsigned char)hclamp((int)(this->r * val), 0, 255);
+			this->g = (unsigned char)hclamp((int)(this->g * val), 0, 255);
+			this->b = (unsigned char)hclamp((int)(this->b * val), 0, 255);
+			this->a = (unsigned char)hclamp((int)(this->a * val), 0, 255);
+			return (*this);
+		}
+		/// @brief Multiplies this Color with a factor.
+		/// @return This modified Color.
+		inline Color operator*=(double value)
+		{
+			this->r = (unsigned char)hclamp((int)(this->r * value), 0, 255);
+			this->g = (unsigned char)hclamp((int)(this->g * value), 0, 255);
+			this->b = (unsigned char)hclamp((int)(this->b * value), 0, 255);
+			this->a = (unsigned char)hclamp((int)(this->a * value), 0, 255);
+			return (*this);
+		}
+		/// @brief Divides this Color with a factor.
+		/// @return This modified Color.
+		inline Color operator/=(double value)
+		{
+			double val = 1.0 / value;
 			this->r = (unsigned char)hclamp((int)(this->r * val), 0, 255);
 			this->g = (unsigned char)hclamp((int)(this->g * val), 0, 255);
 			this->b = (unsigned char)hclamp((int)(this->b * val), 0, 255);
