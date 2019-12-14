@@ -15,6 +15,7 @@
 
 #include <gtypes/Matrix4.h>
 
+#include "aprilExport.h"
 #include "aprilUtil.h"
 #include "Color.h"
 #include "Texture.h"
@@ -22,7 +23,7 @@
 namespace april
 {
 	/// @brief Defines a rendersystem state.
-	class RenderState
+	class aprilExport RenderState
 	{
 	public:
 		/// @brief The current viewport.
