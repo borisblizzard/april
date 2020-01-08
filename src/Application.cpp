@@ -345,12 +345,6 @@ namespace april
 	{
 		if (!this->suspended && this->getState() == State::Running)
 		{
-			// TODO - is this still needed?
-			/*
-#ifndef __ANDROID__
-			april::rendersys->_flushAsyncCommands(); // this is here for safe-guard on non-Android platforms
-#endif
-			*/
 			if (april::window->getOptions().suspendUpdateThread)
 			{
 				this->updateSuspendQueued = true;
