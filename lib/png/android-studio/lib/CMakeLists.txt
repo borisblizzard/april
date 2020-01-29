@@ -23,9 +23,20 @@ file(
 	"../../pngwrite.c"
 	"../../pngwtran.c"
 	"../../pngwutil.c"
+	"../../arm/arm_init.c"
+	"../../arm/filter_neon_intrinsics.c"
+	"../../arm/palette_neon_intrinsics.c"
+	"../../arm/filter_neon.S"
 )
 
 add_library(png STATIC ${CppSrc})
+
+string(REPLACE " -mfpu=vfpv3-d16" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REPLACE " -mfpu=vfpv3-d16" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+string(REPLACE " -mfpu=vfpv3-d16" "" CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS}")
+add_definitions(
+	-mfpu=neon
+)
 
 include_directories(AFTER "../../../hltypes/lib/zlib")
 

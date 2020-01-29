@@ -31,6 +31,8 @@
   <Import Project="..\..\..\..\..\hltypes\msvc\vs2015\props-generic\build-defaults.props" />
   <Import Project="props\configuration.props" />
   <ItemGroup>
+    <ClCompile Include="..\..\intel\filter_sse2_intrinsics.c" />
+    <ClCompile Include="..\..\intel\intel_init.c" />
     <ClCompile Include="..\..\png.c">
       <PrecompiledHeader Condition="'$(Platform)'=='Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -63,6 +65,9 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\pnglibconf.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
