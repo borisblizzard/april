@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1BC969223E45566009F06AE /* filter_neon.S in Sources */ = {isa = PBXBuildFile; fileRef = A1BC969023E45566009F06AE /* filter_neon.S */; };
+		A1BC969323E45566009F06AE /* filter_neon.S in Sources */ = {isa = PBXBuildFile; fileRef = A1BC969023E45566009F06AE /* filter_neon.S */; };
+		A1BC969423E45566009F06AE /* palette_neon_intrinsics.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BC969123E45566009F06AE /* palette_neon_intrinsics.c */; };
+		A1BC969523E45566009F06AE /* palette_neon_intrinsics.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BC969123E45566009F06AE /* palette_neon_intrinsics.c */; };
 		B45500BD1BD78ABE00E75E43 /* zlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B45500BC1BD78ABE00E75E43 /* zlib.framework */; };
 		D197C55A15ED054B0017452F /* png.c in Sources */ = {isa = PBXBuildFile; fileRef = D197C54715ED054B0017452F /* png.c */; };
 		D197C55B15ED054B0017452F /* png.c in Sources */ = {isa = PBXBuildFile; fileRef = D197C54715ED054B0017452F /* png.c */; };
@@ -74,6 +78,8 @@
 /* Begin PBXFileReference section */
 		8D07F2C70486CC7A007CD1D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D07F2C80486CC7A007CD1D0 /* png.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = png.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1BC969023E45566009F06AE /* filter_neon.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = filter_neon.S; path = ../../arm/filter_neon.S; sourceTree = "<group>"; };
+		A1BC969123E45566009F06AE /* palette_neon_intrinsics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = palette_neon_intrinsics.c; path = ../../arm/palette_neon_intrinsics.c; sourceTree = "<group>"; };
 		B45500BC1BD78ABE00E75E43 /* zlib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = zlib.framework; path = ../../../../../__build__/products/Debug/zlib.framework; sourceTree = "<group>"; };
 		D1681B8418D764220088FC68 /* iOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = iOS.xcconfig; path = ../../xcconfig/iOS.xcconfig; sourceTree = "<group>"; };
 		D1681B8518D764220088FC68 /* Mac.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Mac.xcconfig; path = ../../xcconfig/Mac.xcconfig; sourceTree = "<group>"; };
@@ -243,6 +249,8 @@
 			children = (
 				D1E047CD1988CDC700D3374E /* arm_init.c */,
 				D1E047CE1988CDC700D3374E /* filter_neon_intrinsics.c */,
+				A1BC969023E45566009F06AE /* filter_neon.S */,
+				A1BC969123E45566009F06AE /* palette_neon_intrinsics.c */,
 			);
 			name = arm;
 			sourceTree = "<group>";
@@ -392,8 +400,10 @@
 				D197C57515ED054B0017452F /* pngtrans.c in Sources */,
 				D1E047D11988CDC700D3374E /* filter_neon_intrinsics.c in Sources */,
 				D197C57915ED054B0017452F /* pngwio.c in Sources */,
+				A1BC969323E45566009F06AE /* filter_neon.S in Sources */,
 				D197C57B15ED054B0017452F /* pngwrite.c in Sources */,
 				D197C57D15ED054B0017452F /* pngwtran.c in Sources */,
+				A1BC969523E45566009F06AE /* palette_neon_intrinsics.c in Sources */,
 				D1E047D01988CDC700D3374E /* arm_init.c in Sources */,
 				D197C57F15ED054B0017452F /* pngwutil.c in Sources */,
 			);
@@ -406,6 +416,7 @@
 				D1F27938177A295D00E5C131 /* png.c in Sources */,
 				D1F27939177A295D00E5C131 /* pngerror.c in Sources */,
 				D1F2793A177A295D00E5C131 /* pngget.c in Sources */,
+				A1BC969223E45566009F06AE /* filter_neon.S in Sources */,
 				D1F2793B177A295D00E5C131 /* pngmem.c in Sources */,
 				D1F2793C177A295D00E5C131 /* pngpread.c in Sources */,
 				D1F2793D177A295D00E5C131 /* pngread.c in Sources */,
@@ -418,6 +429,7 @@
 				D1F27944177A295D00E5C131 /* pngwrite.c in Sources */,
 				D1F27945177A295D00E5C131 /* pngwtran.c in Sources */,
 				D1F27946177A295D00E5C131 /* pngwutil.c in Sources */,
+				A1BC969423E45566009F06AE /* palette_neon_intrinsics.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
