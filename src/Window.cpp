@@ -487,11 +487,6 @@ namespace april
 		}
 	}
 
-	void Window::terminateMainLoop()
-	{
-		april::application->finish();
-	}
-
 	void Window::showVirtualKeyboard()
 	{
 		if (this->virtualKeyboard != NULL)
