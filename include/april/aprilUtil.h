@@ -420,20 +420,5 @@ namespace april
 		return grect<T>(data[0].trimmed(), data[1].trimmed(), data[2].trimmed(), data[3].trimmed());
 	}
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-	HL_DEPRECATED("Deprecated API. Use april::gvec2ToHstr() instead." )
-	aprilFnExport inline hstr gvec2fToHstr(cgvec2f vector) { return gvec2ToHstr<float>(vector); }
-	HL_DEPRECATED("Deprecated API. Use april::gvec3ToHstr() instead.")
-	aprilFnExport inline hstr gvec3fToHstr(cgvec3f vector) { return gvec3ToHstr<float>(vector); }
-	HL_DEPRECATED("Deprecated API. Use april::grectToHstr() instead.")
-	aprilFnExport inline hstr grectfToHstr(cgrectf rect) { return grectToHstr<float>(rect); }
-	HL_DEPRECATED("Deprecated API. Use april::hstrToGvec2() instead.")
-	aprilFnExport inline gvec2f hstrToGvec2f(chstr string) { return hstrToGvec2<float>(string); }
-	HL_DEPRECATED("Deprecated API. Use april::hstrToGvec3() instead.")
-	aprilFnExport inline gvec3f hstrToGvec3f(chstr string) { return hstrToGvec3<float>(string); }
-	HL_DEPRECATED("Deprecated API. Use april::hstrToGrect() instead.")
-	aprilFnExport inline grectf hstrToGrectf(chstr string) { return hstrToGrect<float>(string); }
-#endif
-
 }
 #endif

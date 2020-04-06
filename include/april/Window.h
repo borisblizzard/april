@@ -225,10 +225,6 @@ namespace april
 		virtual bool update(float timeDelta);
 		/// @brief Processed queued system events.
 		virtual void checkEvents();
-		/// @brief Aborts execution and forces the application to exit after the current frame is complete.
-		/// @note It is safer to return false in your implementation of UpdateDelegate::onUpdate().
-		HL_DEPRECATED("Deprecated API. Use Application::finish() instead.")
-		virtual void terminateMainLoop(); // TODOx - move to Application class
 		/// @brief Displays a virtual keyboard if necessary.
 		/// @note Some systems don't support this while on other this is the only way to handle any kind of keyboard input.
 		virtual void showVirtualKeyboard();
