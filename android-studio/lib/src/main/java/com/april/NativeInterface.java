@@ -162,6 +162,11 @@ public class NativeInterface
 		return (float)Math.sqrt((metrics.xdpi * metrics.xdpi + metrics.ydpi * metrics.ydpi) / 2.0);
 	}
 	
+	public static String getDeviceName()
+	{
+		return Build.MODEL;
+	}
+	
 	public static String getOsVersion()
 	{
 		return Build.VERSION.RELEASE;

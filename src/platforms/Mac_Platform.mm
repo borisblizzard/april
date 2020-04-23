@@ -72,9 +72,9 @@ namespace april
 			// CPU cores
 			info.cpuCores = (int)sysconf(_SC_NPROCESSORS_ONLN);
 			// RAM
-			info.name = "mac";
+			info.name = "macOS";
 			info.osType = SystemInfo::OsType::Mac;
-			info.deviceName = "unnamedMacDevice";
+			info.deviceName = "Mac PC";
 			info.osVersion = _getMaxOsVersion();
 			float scalingFactor = 1.0f;
 			if ([mainScreen respondsToSelector:@selector(backingScaleFactor)])

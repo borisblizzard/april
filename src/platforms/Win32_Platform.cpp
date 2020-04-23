@@ -77,7 +77,7 @@ namespace april
 		{
 			info.name = "Windows" + _getWindowsName();
 			info.osType = SystemInfo::OsType::Windows;
-			info.deviceName = "WindowsDevice";
+			info.deviceName = "Win32 Device";
 			info.architecture = "x86";
 			// number of CPU cores
 			SYSTEM_INFO w32info;

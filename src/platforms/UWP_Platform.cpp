@@ -78,9 +78,9 @@ namespace april
 	{
 		if (info.locale == "")
 		{
-			info.name = "winrt";
+			info.name = "UWP";
 			info.osType = SystemInfo::OsType::UWP;
-			info.deviceName = "UWP-device";
+			info.deviceName = "UWP Device";
 #ifdef _ARM
 			info.architecture = "ARM";
 #else

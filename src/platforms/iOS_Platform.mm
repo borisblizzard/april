@@ -39,6 +39,7 @@ namespace april
 	{
 		if (info.locale == "")
 		{
+			info.name = "iOS";
 			info.locale = "en"; // default is "en"
 			NSBundle* bundle = [NSBundle mainBundle];
 			NSArray* langs = [bundle preferredLocalizations];
@@ -62,11 +63,10 @@ namespace april
 			size_t size = 255;
 			char cname[256] = {'\0'};
 			sysctlbyname("hw.machine", cname, &size, NULL, 0);
-			hstr name = cname;
-			info.name = name; // defaults for unknown devices
+			hstr deviceName = cname;
+			info.deviceName = deviceName; // defaults for unknown devices
 			info.osType = SystemInfo::OsType::iOS;
 			info.deviceName = [[UIDevice currentDevice].name UTF8String];
-			hstr model = [[UIDevice currentDevice].model UTF8String];
 			info.displayDpi = 0;
 			UIScreen* mainScreen = [UIScreen mainScreen];
 			info.displayScaleFactor = [mainScreen scale];
@@ -79,7 +79,7 @@ namespace april
 			NSProcessInfo* processInfo = [NSProcessInfo processInfo];
 			info.cpuCores = (int)[processInfo processorCount];
 			info.ram = (int)([processInfo physicalMemory] / 1024 / 1024);
-			getStaticiOSInfo(name, info);
+			getStaticiOSInfo(deviceName, info);
 			// making sure it's only called from the main thread
 			if (@available(iOS 11.0, *))
 			{

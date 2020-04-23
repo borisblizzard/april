@@ -21,8 +21,9 @@ namespace april
 	
 	void _setupSystemInfo_platform(SystemInfo& info)
 	{
-		info.name = "posix";
+		info.name = "Posix";
 		info.osType = SystemInfo::OsType::Posix;
+		info.deviceName = "Posix PC";
 		info.cpuCores = 1; // TODO
 		info.displayResolution.set(1024.0f, 768.0f); // TODO
 		info.displayDpi = 96.0f; // TODO

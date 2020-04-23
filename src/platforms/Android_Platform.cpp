@@ -30,9 +30,12 @@ namespace april
 	{
 		if (info.locale == "")
 		{
-			info.name = "android";
+			info.name = "Android";
 			info.osType = SystemInfo::OsType::Android;
-			info.deviceName = "unnamedAndroidDevice";
+			// device name
+			jmethodID methodGetDeviceName = env->GetStaticMethodID(classNativeInterface, "getDeviceName", _JARGS(_JSTR, ));
+			info.deviceName = _JSTR_TO_HSTR((jstring)env->CallStaticObjectMethod(classNativeInterface, methodGetDeviceName));
+			// architecture
 #ifdef _ARM
 			info.architecture = "ARM";
 #else

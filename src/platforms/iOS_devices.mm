@@ -9,7 +9,7 @@
 #include "Platform.h"
 #import <UIKit/UIKit.h>
 
-void getStaticiOSInfo(chstr name, april::SystemInfo& info)
+void getStaticiOSInfo(chstr deviceName, april::SystemInfo& info)
 {
 	int w = info.displayResolution.x;
 	int h = info.displayResolution.y;
@@ -17,162 +17,162 @@ void getStaticiOSInfo(chstr name, april::SystemInfo& info)
 	// and here: https://everymac.com/systems/apple/ipad/index-ipad-specs.html
 	// and here: http://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions
 
-	if (name.startsWith("iPad"))
+	if (deviceName.startsWith("iPad"))
 	{
-		if (name.startsWith("iPad1,"))
+		if (deviceName.startsWith("iPad1,"))
 		{
-			info.name = "iPad 1";
+			info.deviceName = "iPad 1";
 			info.displayDpi = 132;
 		}
-		else if (name.startsWith("iPad2,"))
+		else if (deviceName.startsWith("iPad2,"))
 		{
-			if (name == "iPad2,5" || name == "iPad2,6" || name == "iPad2,7") // iPad Mini
+			if (deviceName == "iPad2,5" || deviceName == "iPad2,6" || deviceName == "iPad2,7") // iPad Mini
 			{
-				info.name = "iPad Mini";
+				info.deviceName = "iPad Mini";
 				info.displayDpi = 163;
 			}
 			else
 			{
-				info.name = "iPad 2";
+				info.deviceName = "iPad 2";
 				info.displayDpi = 132;
 			}
 		}
-		else if (name.startsWith("iPad3,"))
+		else if (deviceName.startsWith("iPad3,"))
 		{
-			if (name == "iPad3,4" || name == "iPad3,5" || name == "iPad3,6") // iPad 4
+			if (deviceName == "iPad3,4" || deviceName == "iPad3,5" || deviceName == "iPad3,6") // iPad 4
 			{
-				info.name = "iPad 4";
+				info.deviceName = "iPad 4";
 			}
 			else
 			{
-				info.name = "iPad 3";
+				info.deviceName = "iPad 3";
 			}
 			info.displayDpi = 264;
 		}
-		else if (name.startsWith("iPad4,"))
+		else if (deviceName.startsWith("iPad4,"))
 		{
-			if (name == "iPad4,4" || name == "iPad4,5" || name == "iPad4,6") // iPad Mini 2
+			if (deviceName == "iPad4,4" || deviceName == "iPad4,5" || deviceName == "iPad4,6") // iPad Mini 2
 			{
-				info.name = "iPad Mini 2";
+				info.deviceName = "iPad Mini 2";
 				info.displayDpi = 326;
 			}
-			else if (name == "iPad4,7" || name == "iPad4,8" || name == "iPad4,9") // iPad Mini 3
+			else if (deviceName == "iPad4,7" || deviceName == "iPad4,8" || deviceName == "iPad4,9") // iPad Mini 3
 			{
-				info.name = "iPad Mini 3";
+				info.deviceName = "iPad Mini 3";
 				info.displayDpi = 326;
 			}
 			else
 			{
-				info.name = "iPad Air";
+				info.deviceName = "iPad Air";
 				info.displayDpi = 264;
 			}
 		}
-		else if (name.startsWith("iPad5,"))
+		else if (deviceName.startsWith("iPad5,"))
 		{
-			info.name = "iPad Air 2";
+			info.deviceName = "iPad Air 2";
 			info.displayDpi = 264;
-			if (name == "iPad5,1" || name == "iPad5,2") // iPad Mini 4
+			if (deviceName == "iPad5,1" || deviceName == "iPad5,2") // iPad Mini 4
 			{
-				info.name = "iPad Mini 4";
+				info.deviceName = "iPad Mini 4";
 				info.displayDpi = 326;
 			}
 		}
-		else if (name.startsWith("iPad6,"))
+		else if (deviceName.startsWith("iPad6,"))
 		{
-			info.name = "iPad Pro";
+			info.deviceName = "iPad Pro";
 			info.displayDpi = 264;
-			if (name == "iPad6,11" || name == "iPad6,12") // 9.7"
+			if (deviceName == "iPad6,11" || deviceName == "iPad6,12") // 9.7"
 			{
-				info.name = "iPad 5";
+				info.deviceName = "iPad 5";
 			}
 		}
-		else if (name.startsWith("iPad7,"))
+		else if (deviceName.startsWith("iPad7,"))
 		{
-			info.name = "iPad Pro";
+			info.deviceName = "iPad Pro";
 			info.displayDpi = 264;
-			if (name == "iPad7,5" || name == "iPad7,6")
+			if (deviceName == "iPad7,5" || deviceName == "iPad7,6")
 			{
-				info.name = "iPad 6";
+				info.deviceName = "iPad 6";
 			}
-			else if (name == "iPad7,11" || name == "iPad7,12")
+			else if (deviceName == "iPad7,11" || deviceName == "iPad7,12")
 			{
-				info.name = "iPad 7";
+				info.deviceName = "iPad 7";
 			}
 		}
-		else if (name.startsWith("iPad8,"))
+		else if (deviceName.startsWith("iPad8,"))
 		{
-			info.name = "iPad Pro";
+			info.deviceName = "iPad Pro";
 			info.displayDpi = 264;
 		}
-		else if (name.startsWith("iPad11,"))
+		else if (deviceName.startsWith("iPad11,"))
 		{
-			info.name = "iPad Air 3";
+			info.deviceName = "iPad Air 3";
 			info.displayDpi = 264;
-			if (name == "iPad11,1" || name == "iPad11,2") // iPad Mini 5
+			if (deviceName == "iPad11,1" || deviceName == "iPad11,2") // iPad Mini 5
 			{
-				info.name = "iPad Mini 5";
+				info.deviceName = "iPad Mini 5";
 				info.displayDpi = 326;
 			}
 		}
 		else
 		{
-			info.name = "iPad ??? (" + name + ")";
+			info.deviceName = "iPad ??? (" + deviceName + ")";
 			info.displayDpi = 264;
 		}
 	}
-	else if (name.startsWith("iPhone"))
+	else if (deviceName.startsWith("iPhone"))
 	{
-		if (name == "iPhone1,1")
+		if (deviceName == "iPhone1,1")
 		{
-			info.name = "iPhone 2G";
+			info.deviceName = "iPhone 2G";
 			info.displayDpi = 163;
 		}
-		else if (name == "iPhone1,2")
+		else if (deviceName == "iPhone1,2")
 		{
-			info.name = "iPhone 3G";
+			info.deviceName = "iPhone 3G";
 			info.displayDpi = 163;
 		}
-		else if (name == "iPhone2,1")
+		else if (deviceName == "iPhone2,1")
 		{
-			info.name = "iPhone 3GS";
+			info.deviceName = "iPhone 3GS";
 			info.displayDpi = 163;
 		}
-		else if (name.startsWith("iPhone3,"))
+		else if (deviceName.startsWith("iPhone3,"))
 		{
-			info.name = "iPhone 4";
+			info.deviceName = "iPhone 4";
 			info.displayDpi = 326;
 		}
-		else if (name.startsWith("iPhone4,"))
+		else if (deviceName.startsWith("iPhone4,"))
 		{
-			info.name = "iPhone 4S";
+			info.deviceName = "iPhone 4S";
 			info.displayDpi = 326;
 		}
-		else if (name.startsWith("iPhone5,"))
+		else if (deviceName.startsWith("iPhone5,"))
 		{
 			info.displayDpi = 326;
-			if (name == "iPhone5,1" || name == "iPhone5,2")
+			if (deviceName == "iPhone5,1" || deviceName == "iPhone5,2")
 			{
-				info.name = "iPhone 5";
+				info.deviceName = "iPhone 5";
 			}
 			else
 			{
-				info.name = "iPhone 5C";
+				info.deviceName = "iPhone 5C";
 			}
 		}
-		else if (name.startsWith("iPhone6,"))
+		else if (deviceName.startsWith("iPhone6,"))
 		{
-			info.name = "iPhone 5S";
+			info.deviceName = "iPhone 5S";
 			info.displayDpi = 326;
 		}
-		else if (name.startsWith("iPhone7,"))
+		else if (deviceName.startsWith("iPhone7,"))
 		{
-			if (name.startsWith("iPhone7,2"))
+			if (deviceName.startsWith("iPhone7,2"))
 			{
-				info.name = "iPhone 6";
+				info.deviceName = "iPhone 6";
 				info.displayDpi = 326;
 				if ([[UIScreen mainScreen] nativeScale] != 2)
 				{
-					info.name += " Zoomed_4inch";
+					info.deviceName += " Zoomed_4inch";
 					info.displayDpi = 316;
 				}
 			}
@@ -182,234 +182,234 @@ void getStaticiOSInfo(chstr name, april::SystemInfo& info)
 				// The physical DPI is 401, but because of this, it is better to use the upscaled equivalent DPI of 461
 				// we also need to account for possible zoomed mode. there can be 2 zoomed modes, one for compatibility upscaling iPhone 5 resolution
 				// and one as a feature, upscaling iPhone 6 resolution
-				info.name = "iPhone 6+";
+				info.deviceName = "iPhone 6+";
 				info.displayDpi = 461;
 				if (w == 1704)
 				{
-					info.name += " Zoomed_4inch";
+					info.deviceName += " Zoomed_4inch";
 					info.displayDpi = 355;
 				}
 				else if (w == 2001)
 				{
-					info.name += " Zoomed_4.7inch";
+					info.deviceName += " Zoomed_4.7inch";
 					info.displayDpi = 417;
 				}
 			}
 		}
-		else if (name.startsWith("iPhone8,"))
+		else if (deviceName.startsWith("iPhone8,"))
 		{
-			if (name.startsWith("iPhone8,1"))
+			if (deviceName.startsWith("iPhone8,1"))
 			{
-				info.name = "iPhone 6S";
+				info.deviceName = "iPhone 6S";
 				info.displayDpi = 326;
 				if ([[UIScreen mainScreen] nativeScale] != 2)
 				{
-					info.name += " Zoomed_4inch";
+					info.deviceName += " Zoomed_4inch";
 					info.displayDpi = 316;
 				}
 			}
-			else if (name.startsWith("iPhone8,2"))
+			else if (deviceName.startsWith("iPhone8,2"))
 			{
-				info.name = "iPhone 6S+";
+				info.deviceName = "iPhone 6S+";
 				info.displayDpi = 461;
 				if (w == 1704)
 				{
-					info.name += " Zoomed_4inch";
+					info.deviceName += " Zoomed_4inch";
 					info.displayDpi = 355;
 				}
 				else if (w == 2001)
 				{
-					info.name += " Zoomed_4.7inch";
+					info.deviceName += " Zoomed_4.7inch";
 					info.displayDpi = 417;
 				}
 			}
 			else
 			{
-				info.name = "iPhone SE";
+				info.deviceName = "iPhone SE";
 				info.displayDpi = 326;
 			}
 		}
-		else if (name.startsWith("iPhone9,"))
+		else if (deviceName.startsWith("iPhone9,"))
 		{
-			if (name == "iPhone9,1" || name == "iPhone9,3")
+			if (deviceName == "iPhone9,1" || deviceName == "iPhone9,3")
 			{
-				info.name = "iPhone 7";
+				info.deviceName = "iPhone 7";
 				info.displayDpi = 326;
 				if ([[UIScreen mainScreen] nativeScale] != 2)
 				{
-					info.name += " Zoomed_4inch";
+					info.deviceName += " Zoomed_4inch";
 					info.displayDpi = 316;
 				}
 			}
 			else
 			{
-				info.name = "iPhone 7+";
+				info.deviceName = "iPhone 7+";
 				info.displayDpi = 461;
 				if (w == 1704)
 				{
-					info.name += " Zoomed_4inch";
+					info.deviceName += " Zoomed_4inch";
 					info.displayDpi = 355;
 				}
 				else if (w == 2001)
 				{
-					info.name += " Zoomed_4.7inch";
+					info.deviceName += " Zoomed_4.7inch";
 					info.displayDpi = 417;
 				}
 			}
 		}
-		else if (name.startsWith("iPhone10,"))
+		else if (deviceName.startsWith("iPhone10,"))
 		{
-			if (name == "iPhone10,1" || name == "iPhone10,4")
+			if (deviceName == "iPhone10,1" || deviceName == "iPhone10,4")
 			{
-				info.name = "iPhone 8";
+				info.deviceName = "iPhone 8";
 				info.displayDpi = 326;
 			}
-			else if (name == "iPhone10,2" || name == "iPhone10,5")
+			else if (deviceName == "iPhone10,2" || deviceName == "iPhone10,5")
 			{
-				info.name = "iPhone 8+";
+				info.deviceName = "iPhone 8+";
 				info.displayDpi = 461;
 			}
 			else
 			{
-				info.name = "iPhone X";
+				info.deviceName = "iPhone X";
 				info.displayDpi = 458;
 			}
 		}
-		else if (name.startsWith("iPhone11,"))
+		else if (deviceName.startsWith("iPhone11,"))
 		{
-			if (name == "iPhone11,8")
+			if (deviceName == "iPhone11,8")
 			{
-				info.name = "iPhone XR";
+				info.deviceName = "iPhone XR";
 				info.displayDpi = 326;
 			}
-			else if (name == "iPhone11,2")
+			else if (deviceName == "iPhone11,2")
 			{
-				info.name = "iPhone Xs";
+				info.deviceName = "iPhone Xs";
 				info.displayDpi = 458;
 			}
 			else
 			{
-				info.name = "iPhone Xs Max";
+				info.deviceName = "iPhone Xs Max";
 				info.displayDpi = 458;
 			}
 		}
-		else if (name.startsWith("iPhone12,"))
+		else if (deviceName.startsWith("iPhone12,"))
 		{
-			if (name == "iPhone12,5")
+			if (deviceName == "iPhone12,5")
 			{
-				info.name = "iPhone 11 Pro Max";
+				info.deviceName = "iPhone 11 Pro Max";
 				info.displayDpi = 326;
 			}
-			else if (name == "iPhone12,3")
+			else if (deviceName == "iPhone12,3")
 			{
-				info.name = "iPhone 11 Pro";
+				info.deviceName = "iPhone 11 Pro";
 				info.displayDpi = 458;
 			}
 			else
 			{
-				info.name = "iPhone 11";
+				info.deviceName = "iPhone 11";
 				info.displayDpi = 458;
 			}
 		}
 		else
 		{
-			info.name = "iPhone ??? (" + name + ")";
+			info.deviceName = "iPhone ??? (" + deviceName + ")";
 			info.displayDpi = 326;
 		}
 	}
-	else if (name.startsWith("iPod"))
+	else if (deviceName.startsWith("iPod"))
 	{
-		if (name == "iPod1,1")
+		if (deviceName == "iPod1,1")
 		{
-			info.name = "iPod Touch";
+			info.deviceName = "iPod Touch";
 			info.displayDpi = 163;
 		}
-		else if (name == "iPod2,1")
+		else if (deviceName == "iPod2,1")
 		{
-			info.name = "iPod Touch 2";
+			info.deviceName = "iPod Touch 2";
 			info.displayDpi = 163;
 		}
-		else if (name == "iPod3,1")
+		else if (deviceName == "iPod3,1")
 		{
-			info.name = "iPod Touch 3";
+			info.deviceName = "iPod Touch 3";
 			info.displayDpi = 163;
 		}
-		else if (name == "iPod4,1")
+		else if (deviceName == "iPod4,1")
 		{
-			info.name = "iPod Touch 4";
+			info.deviceName = "iPod Touch 4";
 			info.displayDpi = 326;
 		}
-		else if (name == "iPod5,1")
+		else if (deviceName == "iPod5,1")
 		{
-			info.name = "iPod Touch 5";
+			info.deviceName = "iPod Touch 5";
 			info.displayDpi = 326;
 		}
-		else if (name == "iPod7,1")
+		else if (deviceName == "iPod7,1")
 		{
-			info.name = "iPod Touch 6";
+			info.deviceName = "iPod Touch 6";
 			info.displayDpi = 326;
 		}
-		else if (name == "iPod9,1")
+		else if (deviceName == "iPod9,1")
 		{
-			info.name = "iPod Touch 7";
+			info.deviceName = "iPod Touch 7";
 			info.displayDpi = 326;
 		}
 		else
 		{
-			info.name = "iPod ??? (" + name + ")";
+			info.deviceName = "iPod ??? (" + deviceName + ")";
 			info.displayDpi = 326;
 		}
 	}
-	else if (name.startsWith("x86")) // iPhone Simulator
+	else if (deviceName.startsWith("x86")) // iPhone Simulator
 	{
 		if ((float)w / h >= 1.5f) // iPhone
 		{
 			if (w == 480)
 			{
-				info.name = "iPhone 3GS";
+				info.deviceName = "iPhone 3GS";
 				info.displayDpi = 163;
 			}
 			else if (w == 960)
 			{
-				info.name = "iPhone 4";
+				info.deviceName = "iPhone 4";
 				info.displayDpi = 326;
 			}
 			else if (w == 1136)
 			{
 				if ([[UIScreen mainScreen] nativeScale] != 2)
 				{
-					info.name = "iPhone 6 Zoomed_4inch";
+					info.deviceName = "iPhone 6 Zoomed_4inch";
 					info.displayDpi = 316;
 				}
 				else
 				{
-					info.name = "iPhone 5";
+					info.deviceName = "iPhone 5";
 					info.displayDpi = 326;
 				}
 			}
 			else if (w == 1334)
 			{
-				info.name = "iPhone 6";
+				info.deviceName = "iPhone 6";
 				info.displayDpi = 326;
 			}
 			else if (w == 2208)
 			{
-				info.name = "iPhone 6 Plus";
+				info.deviceName = "iPhone 6 Plus";
 				info.displayDpi = 461;
 			}
 			else if (w == 1704)
 			{
-				info.name = "iPhone 6+ Zoomed_4inch";
+				info.deviceName = "iPhone 6+ Zoomed_4inch";
 				info.displayDpi = 355;
 			}
 			else if (w == 2001)
 			{
-				info.name = "iPhone 6+ Zoomed_4.7inch";
+				info.deviceName = "iPhone 6+ Zoomed_4.7inch";
 				info.displayDpi = 417;
 			}
 			else if (w == 2436)
 			{
-				info.name = "iPhone X";
+				info.deviceName = "iPhone X";
 				info.displayDpi = 458;
 			}
 		}
@@ -417,17 +417,17 @@ void getStaticiOSInfo(chstr name, april::SystemInfo& info)
 		{
 			if (h == 768)
 			{
-				info.name = "iPad 2";
+				info.deviceName = "iPad 2";
 				info.displayDpi = 132;
 			}
 			else if (h == 1536)
 			{
-				info.name = "iPad 3";
+				info.deviceName = "iPad 3";
 				info.displayDpi = 264;
 			}
 			else
 			{
-				info.name = "iPad Pro";
+				info.deviceName = "iPad Pro";
 				info.displayDpi = 264;
 			}
 		}
