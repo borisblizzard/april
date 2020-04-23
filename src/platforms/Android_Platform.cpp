@@ -32,9 +32,6 @@ namespace april
 		{
 			info.name = "Android";
 			info.osType = SystemInfo::OsType::Android;
-			// device name
-			jmethodID methodGetDeviceName = env->GetStaticMethodID(classNativeInterface, "getDeviceName", _JARGS(_JSTR, ));
-			info.deviceName = _JSTR_TO_HSTR((jstring)env->CallStaticObjectMethod(classNativeInterface, methodGetDeviceName));
 			// architecture
 #ifdef _ARM
 			info.architecture = "ARM";
@@ -45,8 +42,12 @@ namespace april
 			info.cpuCores = sysconf(_SC_NPROCESSORS_CONF);
 			// RAM
 			info.ram = (int)(((int64_t)sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES)) / (1024 * 1024)); // in MB
-			// display resolution
+			// JNI calls
 			APRIL_GET_NATIVE_INTERFACE_CLASS(classNativeInterface);
+			// device name
+			jmethodID methodGetDeviceName = env->GetStaticMethodID(classNativeInterface, "getDeviceName", _JARGS(_JSTR, ));
+			info.deviceName = _JSTR_TO_HSTR((jstring)env->CallStaticObjectMethod(classNativeInterface, methodGetDeviceName));
+			// display resolution
 			// TODO - maybe use direct Unix calls?
 			jmethodID methodGetDisplayResolution = env->GetStaticMethodID(classNativeInterface, "getDisplayResolution", _JARGS(_JOBJ, ));
 			jintArray jResolution = (jintArray)env->CallStaticObjectMethod(classNativeInterface, methodGetDisplayResolution);
