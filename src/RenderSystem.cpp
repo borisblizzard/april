@@ -657,7 +657,7 @@ namespace april
 			hlog::errorf(logTag, "Cannot create texture '%s', the texture format '%s' is not supported!", filename.cStr(), format.getName().cStr());
 			return NULL;
 		}
-		hstr name = (fromResource ? this->findTextureResource(filename) : this->findTextureFile(filename));
+		hstr name = (fromResource ? this->findTextureResource(filename, true) : this->findTextureFile(filename, true));
 		if (name == "")
 		{
 			return NULL;
@@ -1457,7 +1457,7 @@ namespace april
 		this->_addAsyncCommand(new CustomCommand(function, args));
 	}
 
-	hstr RenderSystem::findTextureResource(chstr filename) const
+	hstr RenderSystem::findTextureResource(chstr filename, bool includeExtension) const
 	{
 		if (hresource::exists(filename))
 		{
@@ -1470,7 +1470,7 @@ namespace april
 			name = filename + (*it);
 			if (hresource::exists(name))
 			{
-				return name;
+				return (includeExtension ? name : filename);
 			}
 		}
 		hstr noExtensionName = hfile::withoutExtension(filename);
@@ -1481,14 +1481,14 @@ namespace april
 				name = noExtensionName + (*it);
 				if (hresource::exists(name))
 				{
-					return name;
+					return (includeExtension ? name : noExtensionName);
 				}
 			}
 		}
 		return "";
 	}
 	
-	hstr RenderSystem::findTextureFile(chstr filename) const
+	hstr RenderSystem::findTextureFile(chstr filename, bool includeExtension) const
 	{
 		if (hfile::exists(filename))
 		{
@@ -1501,7 +1501,7 @@ namespace april
 			name = filename + (*it);
 			if (hfile::exists(name))
 			{
-				return name;
+				return (includeExtension ? name : filename);
 			}
 		}
 		hstr noExtensionName = hfile::withoutExtension(filename);
@@ -1512,7 +1512,7 @@ namespace april
 				name = noExtensionName + (*it);
 				if (hfile::exists(name))
 				{
-					return name;
+					return (includeExtension ? name : noExtensionName);
 				}
 			}
 		}

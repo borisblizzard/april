@@ -567,12 +567,14 @@ namespace april
 		void executeCustomCommand(void (*function)(const harray<void*>& args), const harray<void*>& args = harray<void*>());
 		/// @brief Finds the actual filename of a texture resource file.
 		/// @param[in] filename Resource filename without the extension.
+		/// @param[in] includeExtension Whether the exact extension should be included.
 		/// @return The detected resource filename or an empty string if no resource file could be found.
-		hstr findTextureResource(chstr filename) const;
+		hstr findTextureResource(chstr filename, bool includeExtension = false) const;
 		/// @brief Finds the actual filename of a texture file.
 		/// @param[in] filename Filename without the extension.
+		/// @param[in] includeExtension Whether the exact extension should be included.
 		/// @return The detected filename or an empty string if no file could be found.
-		hstr findTextureFile(chstr filename) const;
+		hstr findTextureFile(chstr filename, bool includeExtension = false) const;
 		/// @brief Unloads all textures.
 		/// @note Useful for clearing all memory or if something invalidates textures and cannot guarantee that they are loaded anymore.
 		void unloadTextures();
