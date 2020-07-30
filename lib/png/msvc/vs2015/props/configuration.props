@@ -6,17 +6,11 @@
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <StringPooling>true</StringPooling>
       <CompileAs>CompileAsC</CompileAs>
-    </ClCompile>
-    <Link>
-      <Version>15</Version>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Platform)'=='Win32'">
-    <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pngpriv.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
+      <Version>15</Version>
       <AdditionalDependencies>zlib1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
