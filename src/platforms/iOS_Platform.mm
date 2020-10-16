@@ -79,6 +79,7 @@ namespace april
 			NSProcessInfo* processInfo = [NSProcessInfo processInfo];
 			info.cpuCores = (int)[processInfo processorCount];
 			info.ram = (int)([processInfo physicalMemory] / 1024 / 1024);
+			hlog::debug(april::logTag, "Device name: " + info.deviceName);
 			getStaticiOSInfo(deviceName, info);
 			// making sure it's only called from the main thread
 			if (@available(iOS 11.0, *))

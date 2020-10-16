@@ -298,7 +298,7 @@ void getStaticiOSInfo(chstr deviceName, april::SystemInfo& info)
 			if (deviceName == "iPhone12,5")
 			{
 				info.deviceName = "iPhone 11 Pro Max";
-				info.displayDpi = 326;
+				info.displayDpi = 458;
 			}
 			else if (deviceName == "iPhone12,3")
 			{
@@ -410,6 +410,21 @@ void getStaticiOSInfo(chstr deviceName, april::SystemInfo& info)
 			else if (w == 2436)
 			{
 				info.deviceName = "iPhone X";
+				info.displayDpi = 458;
+			}
+			else if (w == 1792)
+			{
+				info.deviceName = "iPhone 11";
+				info.displayDpi = 458;
+			}
+			else if (w == 2436)
+			{
+				info.deviceName = "iPhone 11 Pro";
+				info.displayDpi = 458;
+			}
+			else if (w == 2688)
+			{
+				info.deviceName = "iPhone 11 Pro Max";
 				info.displayDpi = 458;
 			}
 		}
