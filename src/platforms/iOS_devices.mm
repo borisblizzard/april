@@ -311,10 +311,33 @@ void getStaticiOSInfo(chstr deviceName, april::SystemInfo& info)
 				info.displayDpi = 458;
 			}
 		}
+		else if (deviceName.startsWith("iPhone13,"))
+		{
+			if (deviceName == "iPhone13,4")
+			{
+				info.deviceName = "iPhone 12 Pro Max";
+				info.displayDpi = 458;
+			}
+			else if (deviceName == "iPhone13,3")
+			{
+				info.deviceName = "iPhone 12 Pro";
+				info.displayDpi = 460;
+			}
+			else if (deviceName == "iPhone13,2")
+			{
+				info.deviceName = "iPhone 12";
+				info.displayDpi = 460;
+			}
+			else
+			{
+				info.deviceName = "iPhone 12 Mini";
+				info.displayDpi = 476;
+			}
+		}
 		else
 		{
 			info.deviceName = "iPhone ??? (" + deviceName + ")";
-			info.displayDpi = 326;
+			info.displayDpi = 460;
 		}
 	}
 	else if (deviceName.startsWith("iPod"))
