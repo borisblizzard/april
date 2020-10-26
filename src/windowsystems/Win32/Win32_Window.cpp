@@ -669,6 +669,8 @@ namespace april
 		static TOUCHINPUT touches[1000];
 		static POINT _systemCursorPosition;
 		static gvec2f position;
+		static gvec2i currentPosition;
+		static gvec2i lastPosition;
 		switch (message)
 		{
 		case WM_TOUCH: // (Win7+ only)
@@ -796,14 +798,16 @@ namespace april
 		case WM_MOUSEMOVE:
 			if (!_touchEnabled || (GetMessageExtraInfo() & MOUSEEVENTF_FROMTOUCH) != MOUSEEVENTF_FROMTOUCH)
 			{
-				if (WIN32_WINDOW->_mouseMessages > 0)
+				currentPosition.set(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+				if (WIN32_WINDOW->_mouseMessages > 0 && lastPosition != currentPosition)
 				{
 					--WIN32_WINDOW->_mouseMessages;
+					lastPosition = currentPosition;
 				}
 				if (WIN32_WINDOW->_mouseMessages == 0)
 				{
 					april::window->queueInputModeChange(InputMode::Mouse);
-					position.set((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam));
+					position.set((float)currentPosition.x, (float)currentPosition.y);
 					if (april::window->getInputMode() != InputMode::Touch)
 					{
 						april::window->queueMouseInput(MouseEvent::Type::Move, position, Key::None);
@@ -819,6 +823,7 @@ namespace april
 		case WM_MOUSEWHEEL:
 			if (!_touchEnabled || (GetMessageExtraInfo() & MOUSEEVENTF_FROMTOUCH) != MOUSEEVENTF_FROMTOUCH)
 			{
+				april::window->queueInputModeChange(InputMode::Mouse);
 				_wheelDelta = (float)GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 				if ((GET_KEYSTATE_WPARAM(wParam) & MK_CONTROL) != MK_CONTROL)
 				{
@@ -833,6 +838,7 @@ namespace april
 		case WM_MOUSEHWHEEL:
 			if (!_touchEnabled || (GetMessageExtraInfo() & MOUSEEVENTF_FROMTOUCH) != MOUSEEVENTF_FROMTOUCH)
 			{
+				april::window->queueInputModeChange(InputMode::Mouse);
 				_wheelDelta = (float)GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 				if ((GET_KEYSTATE_WPARAM(wParam) & MK_CONTROL) != MK_CONTROL)
 				{
