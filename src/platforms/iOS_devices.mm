@@ -388,7 +388,7 @@ void getStaticiOSInfoIpad(chstr deviceName, april::SystemInfo& info)
 
 // iPod Touch
 
-void getStaticiOSInfoIpod(chstr deviceName, april::SystemInfo& info)
+void getStaticiOSInfoIpodTouch(chstr deviceName, april::SystemInfo& info)
 {
 	info.deviceName = "iPod Touch ??? (" + deviceName + ")";
 	info.displayDpi = 326;
