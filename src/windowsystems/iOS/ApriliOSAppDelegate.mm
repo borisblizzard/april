@@ -108,7 +108,10 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
 	hlog::write(april::logTag, "Received iOS memory warning!");
-	april::window->queueLowMemoryWarning();
+	if (april::window != NULL)
+	{
+		april::window->queueLowMemoryWarning();
+	}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
