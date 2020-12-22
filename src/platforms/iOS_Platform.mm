@@ -155,7 +155,8 @@ namespace april
 		^{
 			if ([[UIApplication sharedApplication] canOpenURL:nsUrl])
 			{
-				[[UIApplication sharedApplication] openURL:nsUrl];
+				[[UIApplication sharedApplication] openURL:nsUrl options:@{ } completionHandler:nil];
+
 			}
 		});
 		return true; // assumes always success, because it can't get the result otherwise
