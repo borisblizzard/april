@@ -63,13 +63,7 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 			this.requestFocusFromTouch();
 		}
 		// native call is queued into render thread, MUST NOT be called directly from this thread
-		NativeInterface.aprilActivity.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onWindowFocusChanged(focused);
-			}
-		});
+		NativeInterface.aprilActivity.glView.queueEvent(() -> NativeInterface.onWindowFocusChanged(focused));
 	}
 	
 	@Override
@@ -131,13 +125,7 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 			}
 		}
 		final int eventUnicodeChar = event.getUnicodeChar();
-		this.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onKeyDown(eventKeyCode, eventUnicodeChar);
-			}
-		});
+		NativeInterface.onKeyDown(eventKeyCode, eventUnicodeChar);
 		return true;
 	}
 	
@@ -161,13 +149,7 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 				return this._onButtonUp(eventKeyCode);
 			}
 		}
-		this.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onKeyUp(eventKeyCode);
-			}
-		});
+		NativeInterface.onKeyUp(eventKeyCode);
 		return true;
 	}
 	
@@ -179,23 +161,12 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 		{
 			return super.onKeyMultiple(keyCode, repeatCount, event);
 		}
-		String chars = event.getCharacters();
-		if (chars == null || chars.length() == 0)
-		{
-			return super.onKeyMultiple(keyCode, repeatCount, event);
-		}
-		final int eventUnicodeChar = chars.codePointAt(0);
+		final int eventUnicodeChar = event.getUnicodeChar();
 		if (eventUnicodeChar == 0)
 		{
 			return super.onKeyMultiple(keyCode, repeatCount, event);
 		}
-		this.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onChar(eventUnicodeChar);
-			}
-		});
+		NativeInterface.onChar(eventUnicodeChar);
 		return true;
 	}
 	
@@ -243,26 +214,14 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 	private boolean _onButtonDown(final int keyCode)
 	{
 		final int buttonCode = this._convertControllerButton(keyCode);
-		this.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onButtonDown(0, buttonCode);
-			}
-		});
+		NativeInterface.onButtonDown(0, buttonCode);
 		return true;
 	}
 	
 	private boolean _onButtonUp(final int keyCode)
 	{
 		final int buttonCode = this._convertControllerButton(keyCode);
-		this.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onButtonUp(0, buttonCode);
-			}
-		});
+		NativeInterface.onButtonUp(0, buttonCode);
 		return true;
 	}
 	
@@ -272,19 +231,9 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 		final int source = event.getSource();
 		if ((source & InputDevice.SOURCE_CLASS_POINTER) == InputDevice.SOURCE_CLASS_POINTER && event.getAction() == MotionEvent.ACTION_SCROLL)
 		{
-			// TODO - switch to new code and test
-			/*
 			final float x = -event.getAxisValue(MotionEvent.AXIS_HSCROLL);
 			final float y = -event.getAxisValue(MotionEvent.AXIS_VSCROLL);
-			this.queueEvent(new Runnable()
-			{
-				public void run()
-				{
-					NativeInterface.onScroll(x, y);
-				}
-			});
-			*/
-			NativeInterface.onScroll(-event.getAxisValue(MotionEvent.AXIS_HSCROLL), -event.getAxisValue(MotionEvent.AXIS_VSCROLL));
+			NativeInterface.onScroll(x, y);
 			return true;
 		}
 		if ((source & InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK && event.getAction() == MotionEvent.ACTION_MOVE)
@@ -299,73 +248,37 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 			if (this.lastAxisLX != axisLX)
 			{
 				this.lastAxisLX = axisLX;
-				this.queueEvent(new Runnable()
-				{
-					public void run()
-					{
-						NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_LX, axisLX);
-					}
-				});
+				NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_LX, axisLX);
 				handled = true;
 			}
 			if (this.lastAxisLY != axisLY)
 			{
 				this.lastAxisLY = axisLY;
-				this.queueEvent(new Runnable()
-				{
-					public void run()
-					{
-						NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_LY, axisLY);
-					}
-				});
+				NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_LY, axisLY);
 				handled = true;
 			}
 			if (this.lastAxisRX != axisRX)
 			{
 				this.lastAxisRX = axisRX;
-				this.queueEvent(new Runnable()
-				{
-					public void run()
-					{
-						NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_RX, axisRX);
-					}
-				});
+				NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_RX, axisRX);
 				handled = true;
 			}
 			if (this.lastAxisRY != axisRY)
 			{
 				this.lastAxisRY = axisRY;
-				this.queueEvent(new Runnable()
-				{
-					public void run()
-					{
-						NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_RY, axisRY);
-					}
-				});
+				NativeInterface.onControllerAxisChange(0, CONTROLLER_AXIS_RY, axisRY);
 				handled = true;
 			}
 			if (this.lastTriggerL != triggerL)
 			{
 				this.lastTriggerL = triggerL;
-				this.queueEvent(new Runnable()
-				{
-					public void run()
-					{
-						NativeInterface.onControllerAxisChange(0, CONTROLLER_TRIGGER_L, triggerL);
-					}
-				});
+				NativeInterface.onControllerAxisChange(0, CONTROLLER_TRIGGER_L, triggerL);
 				handled = true;
 			}
 			if (this.lastTriggerR != triggerR)
 			{
 				this.lastTriggerR = triggerR;
-				this.queueEvent(new Runnable()
-				{
-					public void run()
-					{
-						NativeInterface.onControllerAxisChange(0, CONTROLLER_TRIGGER_R, triggerR);
-					}
-				});
+				NativeInterface.onControllerAxisChange(0, CONTROLLER_TRIGGER_R, triggerR);
 				handled = true;
 			}
 			if (handled)

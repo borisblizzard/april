@@ -8,26 +8,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ResultReceiver;
-import android.view.inputmethod.InputMethodManager;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.DisplayCutout;
 import android.view.View;
 import android.view.WindowInsets;
-import android.util.DisplayMetrics;
+import android.view.inputmethod.InputMethodManager;
 
-import com.april.DialogFragment;
-
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
-import java.lang.Math;
-import java.lang.Runtime;
 import java.util.Locale;
 
 public class NativeInterface
 {
-	public static android.app.Activity activity = null;
+	public static androidx.fragment.app.FragmentActivity activity = null;
 	public static Activity aprilActivity = null;
 	public static boolean running = false;
 	public static boolean keyboardVisible = false;
@@ -42,7 +36,7 @@ public class NativeInterface
 	{
 		public KeyboardResultReceiver()
 		{
-			super(new Handler());
+			super(new Handler(Looper.getMainLooper()));
 		}
 		
 		@Override
@@ -104,29 +98,10 @@ public class NativeInterface
 	{
 		boolean enabledNavigationBarHiding = NativeInterface.aprilActivity.isEnabledNavigationBarHiding();
 		DisplayMetrics metrics = new DisplayMetrics();
-		int width = 0;
-		int height = 0;
 		Display display = NativeInterface.activity.getWindowManager().getDefaultDisplay();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && enabledNavigationBarHiding)
-		{
-			display.getRealMetrics(metrics);
-			width = metrics.widthPixels;
-			height = metrics.heightPixels;
-		}
-		else // older Android versions
-		{
-			display.getMetrics(metrics);
-			width = metrics.widthPixels;
-			height = metrics.heightPixels;
-			if (enabledNavigationBarHiding)
-			{
-				// get the DecorView's size if navigation bar can be hidden
-				android.graphics.Rect visibleFrame = new android.graphics.Rect();
-				NativeInterface.activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(visibleFrame);
-				width = visibleFrame.right - visibleFrame.left;
-				height = visibleFrame.bottom - visibleFrame.top;
-			}
-		}
+		display.getRealMetrics(metrics);
+		int width = metrics.widthPixels;
+		int height = metrics.heightPixels;
 		if (height > width)
 		{
 			int temp = height;
@@ -151,14 +126,7 @@ public class NativeInterface
 		}
 		DisplayMetrics metrics = new DisplayMetrics();
 		Display display = NativeInterface.activity.getWindowManager().getDefaultDisplay();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-		{
-			display.getRealMetrics(metrics);
-		}
-		else // older Android versions
-		{
-			display.getMetrics(metrics);
-		}
+		display.getRealMetrics(metrics);
 		return (float)Math.sqrt((metrics.xdpi * metrics.xdpi + metrics.ydpi * metrics.ydpi) / 2.0);
 	}
 	
@@ -222,25 +190,19 @@ public class NativeInterface
 	
 	public static void showVirtualKeyboard()
 	{
-		NativeInterface.activity.runOnUiThread(new Runnable()
+		NativeInterface.activity.runOnUiThread(() ->
 		{
-			public void run()
-			{
-				View view = NativeInterface.aprilActivity.getView();
-				NativeInterface._getInputMethodManager().showSoftInput(view, 0, NativeInterface.keyboardResultReceiver);
-			}
+			View view = NativeInterface.aprilActivity.getView();
+			NativeInterface._getInputMethodManager().showSoftInput(view, 0, NativeInterface.keyboardResultReceiver);
 		});
 	}
 	
 	public static void hideVirtualKeyboard()
 	{
-		NativeInterface.activity.runOnUiThread(new Runnable()
+		NativeInterface.activity.runOnUiThread(() ->
 		{
-			public void run()
-			{
-				View view = NativeInterface.aprilActivity.getView();
-				NativeInterface._getInputMethodManager().hideSoftInputFromWindow(view.getWindowToken(), 0, NativeInterface.keyboardResultReceiver);
-			}
+			View view = NativeInterface.aprilActivity.getView();
+			NativeInterface._getInputMethodManager().hideSoftInputFromWindow(view.getWindowToken(), 0, NativeInterface.keyboardResultReceiver);
 		});
 	}
 	

@@ -6,13 +6,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class DialogFragment extends android.app.DialogFragment
+public class DialogFragment extends androidx.fragment.app.DialogFragment
 {
 	public DialogFragment()
 	{
 		super();
 	}
-	
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
@@ -23,13 +23,7 @@ public class DialogFragment extends android.app.DialogFragment
 	public void onCancel(DialogInterface dialog)
 	{
 		dialog.cancel();
-		NativeInterface.aprilActivity.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onDialogCancel();
-			}
-		});
+		NativeInterface.aprilActivity.glView.queueEvent(() -> NativeInterface.onDialogCancel());
 	}
 
 }

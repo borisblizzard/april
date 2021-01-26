@@ -3,11 +3,8 @@ package com.april;
 /// @version 5.2
 
 import android.app.ActivityManager;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
@@ -15,22 +12,19 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.Settings;
-import android.view.DisplayCutout;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowInsets;
 import android.view.WindowManager;
-import com.april.DialogFactory;
 
-import java.lang.Thread;
-import java.util.List;
+import androidx.core.content.pm.PackageInfoCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class Activity extends android.app.Activity implements IActivityEvents
+public class Activity extends FragmentActivity implements IActivityEvents
 {
 	private static final String LOG_TAG = "april";
 	
@@ -52,18 +46,18 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		NativeInterface.archivePath = archivePath;
 	}
 	
-	public void disableNavigationBarHiding() // use this code in your Activity to prevent the navigation bar from being hidden on Android 4.4+
+	public void disableNavigationBarHiding() // use this code in your Activity to prevent the navigation bar from being hidden
 	{
 		this.enabledNavigationBarHiding = false;
 	}
 	
-	public boolean isEnabledNavigationBarHiding() // use this code in your Activity to prevent the navigation bar from being hidden on Android 4.4+
+	public boolean isEnabledNavigationBarHiding() // use this code in your Activity to prevent the navigation bar from being hidden
 	{
-		return (this.enabledNavigationBarHiding && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT);
+		return this.enabledNavigationBarHiding;
 	}
 	
 	public GLSurfaceView glView = null;
-	public ArrayList ignoredKeys = null;
+	public ArrayList<Integer> ignoredKeys = null;
 	public List<ICallback1<Void, Bundle>> callbacksOnCreate = null;
 	public List<ICallback<Void>> callbacksOnStart = null;
 	public List<ICallback<Void>> callbacksOnResume = null;
@@ -81,10 +75,10 @@ public class Activity extends android.app.Activity implements IActivityEvents
 	public Activity()
 	{
 		super();
-		NativeInterface.activity = (android.app.Activity)this;
+		NativeInterface.activity = this;
 		NativeInterface.aprilActivity = this;
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-		this.ignoredKeys = new ArrayList();
+		this.ignoredKeys = new ArrayList<Integer>();
 		this.ignoredKeys.add(KeyEvent.KEYCODE_VOLUME_DOWN);
 		this.ignoredKeys.add(KeyEvent.KEYCODE_VOLUME_UP);
 		this.ignoredKeys.add(KeyEvent.KEYCODE_VOLUME_MUTE);
@@ -243,7 +237,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 	
 	public String createDataPath()
 	{
-		return (Environment.getExternalStorageDirectory() + "/Android/obb/" +
+		return (this.getExternalFilesDir(null) + "/Android/obb/" +
 			NativeInterface.packageName + "/main." + NativeInterface.versionCode + "." + NativeInterface.packageName + ".obb");
 	}
 	
@@ -274,7 +268,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		try
 		{
 			PackageInfo info = this.getPackageManager().getPackageInfo(NativeInterface.packageName, 0);
-			NativeInterface.versionCode = Integer.toString(info.versionCode);
+			NativeInterface.versionCode = "" + (int)(PackageInfoCompat.getLongVersionCode(info) & 0x00000000FFFFFFFF);
 			NativeInterface.versionName = info.versionName;
 			NativeInterface.apkPath = info.applicationInfo.sourceDir;
 			NativeInterface.dataPath = this.createDataPath();
@@ -289,26 +283,12 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		this.glView.requestFocus();
 		this.glView.requestFocusFromTouch();
 		View decorView = window.getDecorView();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+		// hide navigation bar
+		decorView.setOnApplyWindowInsetsListener((v, insets) ->
 		{
-			// hide navigation bar
-			decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener()
-			{
-				@Override
-				public void onSystemUiVisibilityChange(int visibility)
-				{
-					hideNavigationBar();
-				}
-			});
-		}
-		else
-		{
-			decorView.setSystemUiVisibility(
-				View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-				View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-				View.SYSTEM_UI_FLAG_FULLSCREEN | 
-				View.SYSTEM_UI_FLAG_LOW_PROFILE);
-		}
+			hideNavigationBar();
+			return insets;
+		});
 		NativeInterface.activityOnCreate();
 		for (int i = 0; i < this.callbacksOnCreate.size(); ++i)
 		{
@@ -364,13 +344,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 			this.callbacksOnStart.get(i).execute();
 		}
 		// native call is queued into render thread
-		this.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.activityOnStart();
-			}
-		});
+		this.glView.queueEvent(() -> NativeInterface.activityOnStart());
 	}
 	
 	@Override
@@ -389,13 +363,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 			this.registerSensorEventListener();
 		}
 		// native call is queued into render thread, MUST NOT be called directly from this thread
-		this.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.activityOnResume();
-			}
-		});
+		this.glView.queueEvent(() -> NativeInterface.activityOnResume());
 	}
 	
 	@Override
@@ -413,13 +381,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		this.glView.onPause();
 		super.onPause();
 		// native call is queued into render thread, MUST NOT be called directly from this thread
-		this.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.activityOnPause();
-			}
-		});
+		this.glView.queueEvent(() -> NativeInterface.activityOnPause());
 	}
 	
 	@Override
@@ -431,13 +393,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		}
 		super.onStop();
 		// native call is queued into render thread
-		this.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.activityOnStop();
-			}
-		});
+		this.glView.queueEvent(() -> NativeInterface.activityOnStop());
 	}
 	
 	@Override
@@ -449,13 +405,10 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		}
 		this.waiting = true;
 		// native call is queued into render thread
-		this.glView.queueEvent(new Runnable()
+		this.glView.queueEvent(() ->
 		{
-			public void run()
-			{
-				NativeInterface.activityOnDestroy();
-				waiting = false;
-			}
+			NativeInterface.activityOnDestroy();
+			waiting = false;
 		});
 		while (this.waiting)
 		{
@@ -478,8 +431,6 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		super.onDestroy();
 		if (this.useHardExit)
 		{
-			// TODO - deprecated, find new solution
-			System.runFinalizersOnExit(true);
 			System.exit(0);
 		}
 	}
@@ -493,13 +444,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 			this.callbacksOnRestart.get(i).execute();
 		}
 		// native call is queued into render thread
-		this.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.activityOnRestart();
-			}
-		});
+		this.glView.queueEvent(() -> NativeInterface.activityOnRestart());
 	}
 	
 	@Override
@@ -576,13 +521,7 @@ public class Activity extends android.app.Activity implements IActivityEvents
 	@Override
 	public void onLowMemory()
 	{
-		this.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onLowMemory();
-			}
-		});
+		this.glView.queueEvent(() -> NativeInterface.onLowMemory());
 		super.onLowMemory();
 	}
 	
@@ -596,20 +535,6 @@ public class Activity extends android.app.Activity implements IActivityEvents
 		}
 	}
 
-	// TODO - deprecated, implement new solution
-	@Override
-	protected Dialog onCreateDialog(int id)
-	{
-		return DialogFactory.show();
-	}
-
-	// TODO - deprecated, implement new solution
-	@Override
-	protected Dialog onCreateDialog(int id, Bundle bundle)
-	{
-		return DialogFactory.show();
-	}
-	
 	protected GLSurfaceView createGlView()
 	{
 		return new GLSurfaceView(this);

@@ -26,22 +26,18 @@ public class Renderer implements android.opengl.GLSurfaceView.Renderer
 			NativeInterface.init(args);
 			NativeInterface.running = true;
 			// needed for keyboard height
-			NativeInterface.activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+			NativeInterface.activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(() ->
 			{
-				@Override
-				public void onGlobalLayout()
+				View view = NativeInterface.aprilActivity.getView();
+				Rect r = new Rect();
+				view.getWindowVisibleDisplayFrame(r);
+				float heightRatio = 1.0f - (float)(r.bottom - r.top) / view.getRootView().getHeight();
+				// on some devices heightRatio is weird and gives 0.0666667 or something like that
+				if (heightRatio < 0.1f)
 				{
-					View view = NativeInterface.aprilActivity.getView();
-					Rect r = new Rect();
-					view.getWindowVisibleDisplayFrame(r);
-					float heightRatio = 1.0f - (float)(r.bottom - r.top) / view.getRootView().getHeight();
-					// on some devices heightRatio is weird and gives 0.0666667 or something like that
-					if (heightRatio < 0.1f)
-					{
-						heightRatio = 0.0f;
-					}
-					NativeInterface.onVirtualKeyboardChanged((heightRatio >= 0.15f), heightRatio);
+					heightRatio = 0.0f;
 				}
+				NativeInterface.onVirtualKeyboardChanged((heightRatio >= 0.15f), heightRatio);
 			});
 		}
 	}

@@ -10,13 +10,7 @@ public class No implements OnClickListener
 {
 	public void onClick(DialogInterface dialog, int id)
 	{
-		NativeInterface.aprilActivity.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onDialogNo();
-			}
-		});
+		NativeInterface.aprilActivity.glView.queueEvent(() -> NativeInterface.onDialogNo());
 	}
 	
 }

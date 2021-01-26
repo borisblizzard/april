@@ -10,13 +10,7 @@ public class Ok implements OnClickListener
 {
 	public void onClick(DialogInterface dialog, int id)
 	{
-		NativeInterface.aprilActivity.glView.queueEvent(new Runnable()
-		{
-			public void run()
-			{
-				NativeInterface.onDialogOk();
-			}
-		});
+		NativeInterface.aprilActivity.glView.queueEvent(() -> NativeInterface.onDialogOk());
 	}
 	
 }

@@ -5,15 +5,15 @@ package com.april;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings.System;
 
 public class SystemSettingsObserver extends ContentObserver
 {
 	public SystemSettingsObserver()
 	{
-		super(new Handler());
+		super(new Handler(Looper.getMainLooper()));
 	}
 	
 	@Override
@@ -25,11 +25,6 @@ public class SystemSettingsObserver extends ContentObserver
 	@Override
 	public void onChange(boolean selfChange, Uri uri)
 	{
-		// check if auto-rotation is supported
-		if (Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.GINGERBREAD)
-		{
-			return;
-		}
 		// enable auto-rotation
 		if (System.getInt(NativeInterface.activity.getContentResolver(), System.ACCELEROMETER_ROTATION, 0) != 0)
 		{

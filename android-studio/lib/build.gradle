@@ -20,4 +20,6 @@ dependencies {
 	implementation project(":png")
 	implementation project(":hltypes")
 	implementation project(":gtypes")
+	api "com.android.support:support-v4:30.0.0"
+	api "androidx.core:core:1.2.0"
 }
