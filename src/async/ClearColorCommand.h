@@ -23,7 +23,7 @@ namespace april
 	public:
 		ClearColorCommand(const RenderState& state, const april::Color& color, bool useDepth);
 		
-		void execute();
+		void execute() override;
 
 	protected:
 		april::Color color;

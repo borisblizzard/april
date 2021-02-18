@@ -22,7 +22,7 @@ namespace april
 	public:
 		ClearDepthCommand(const RenderState& state);
 		
-		void execute();
+		void execute() override;
 
 	};
 	

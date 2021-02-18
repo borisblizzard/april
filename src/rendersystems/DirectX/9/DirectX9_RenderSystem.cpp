@@ -708,10 +708,6 @@ namespace april
 		{
 			setOnce = true;
 		}
-		if (texture == NULL && setOnce)
-		{
-			int a = 0;
-		}
 		if (texture == NULL)
 		{
 			if (this->_currentIntermediateRenderTexture != NULL)

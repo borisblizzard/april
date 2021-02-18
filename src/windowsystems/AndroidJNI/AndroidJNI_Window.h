@@ -31,35 +31,35 @@ namespace april
 		AndroidJNI_Window();
 		~AndroidJNI_Window();
 		
-		inline void setTitle(chstr title) { }
-		inline bool isCursorVisible() const { return false; }
-		inline void setCursorVisible(bool value) { }
-		HL_DEFINE_GET(int, width, Width);
-		HL_DEFINE_GET(int, height, Height);
-		void* getBackendId() const;
+		inline void setTitle(chstr title) override { }
+		inline bool isCursorVisible() const override { return false; }
+		inline void setCursorVisible(bool value) override { }
+		HL_DEFINE_GET_OVERRIDE(int, width, Width);
+		HL_DEFINE_GET_OVERRIDE(int, height, Height);
+		void* getBackendId() const override;
 		
-		bool update(float timeDelta);
+		bool update(float timeDelta) override;
 		
-		void queueTouchInput(TouchEvent::Type type, int index, cgvec2f position);
-		void queueControllerInput(ControllerEvent::Type type, int controllerIndex, Button buttonCode, float axisValue);
+		void queueTouchInput(TouchEvent::Type type, int index, cgvec2f position) override;
+		void queueControllerInput(ControllerEvent::Type type, int controllerIndex, Button buttonCode, float axisValue) override;
 
-		void showVirtualKeyboard();
-		void hideVirtualKeyboard();
+		void showVirtualKeyboard() override;
+		void hideVirtualKeyboard() override;
 
-		void handleFocusChange(bool focused);
-		void handleActivityChange(bool active);
+		void handleFocusChange(bool focused) override;
+		void handleActivityChange(bool active) override;
 		
 	protected:
 		int width;
 		int height;
 		bool forcedFocus;
 
-		void _systemCreate(int width, int height, bool fullscreen, chstr title, Window::Options options);
+		void _systemCreate(int width, int height, bool fullscreen, chstr title, Window::Options options) override;
 		
-		Cursor* _createCursor(bool fromResource);
-		void _refreshCursor() { }
+		Cursor* _createCursor(bool fromResource) override;
+		void _refreshCursor() override { }
 		
-		void _presentFrame(bool systemEnabled);
+		void _presentFrame(bool systemEnabled) override;
 
 	};
 

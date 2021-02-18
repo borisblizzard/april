@@ -31,7 +31,7 @@ namespace april
 			this->vertices.add(vertices, count);
 		}
 
-		void execute()
+		void execute() override
 		{
 			RenderCommand::execute();
 			april::rendersys->_deviceRender(this->renderOperation, (T*)this->vertices, this->vertices.size());

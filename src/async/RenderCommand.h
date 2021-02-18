@@ -24,10 +24,10 @@ namespace april
 		RenderCommand(const RenderState& state);
 
 		RenderState* getState() { return &this->state; }
-		bool isUseState() const { return true; }
-		bool isRepeatable() const { return true; }
+		bool isUseState() const override { return true; }
+		bool isRepeatable() const override { return true; }
 		
-		void execute();
+		void execute() override;
 
 	protected:
 		RenderState state;

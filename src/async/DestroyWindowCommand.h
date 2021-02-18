@@ -22,9 +22,9 @@ namespace april
 	public:
 		DestroyWindowCommand();
 
-		bool isSystemCommand() const { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	};
 

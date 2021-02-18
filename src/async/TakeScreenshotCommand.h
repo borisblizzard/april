@@ -23,7 +23,7 @@ namespace april
 	public:
 		TakeScreenshotCommand(const RenderState& state, Image::Format format, bool backBufferOnly);
 		
-		void execute();
+		void execute() override;
 
 	protected:
 		Image::Format format;

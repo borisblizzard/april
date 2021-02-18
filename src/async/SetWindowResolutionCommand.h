@@ -22,9 +22,9 @@ namespace april
 	public:
 		SetWindowResolutionCommand(int width, int height, bool fullscreen);
 
-		bool isSystemCommand() const { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	protected:
 		int width;

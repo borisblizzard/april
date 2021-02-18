@@ -41,21 +41,21 @@ namespace april
 		RenderHelperLayered2D(const hmap<hstr, hstr>& options);
 		~RenderHelperLayered2D();
 
-		bool create();
-		bool destroy();
-		void clear();
-		void flush();
+		bool create() override;
+		bool destroy() override;
+		void clear() override;
+		void flush() override;
 
-		bool render(const RenderOperation& renderOperation, const PlainVertex* vertices, int count);
-		bool render(const RenderOperation& renderOperation, const PlainVertex* vertices, int count, Color color);
-		bool render(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count);
-		bool render(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count, Color color);
-		bool render(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count);
-		bool render(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count);
-		bool drawRect(cgrectf rect, const Color& color);
-		bool drawFilledRect(cgrectf rect, const Color& color);
-		bool drawTexturedRect(cgrectf rect, cgrectf src);
-		bool drawTexturedRect(cgrectf rect, cgrectf src, const Color& color);
+		bool render(const RenderOperation& renderOperation, const PlainVertex* vertices, int count) override;
+		bool render(const RenderOperation& renderOperation, const PlainVertex* vertices, int count, Color color) override;
+		bool render(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count) override;
+		bool render(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count, Color color) override;
+		bool render(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count) override;
+		bool render(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count) override;
+		bool drawRect(cgrectf rect, const Color& color) override;
+		bool drawFilledRect(cgrectf rect, const Color& color) override;
+		bool drawTexturedRect(cgrectf rect, cgrectf src) override;
+		bool drawTexturedRect(cgrectf rect, cgrectf src, const Color& color) override;
 
 	protected:
 		class RenderCall

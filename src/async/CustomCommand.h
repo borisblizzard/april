@@ -24,7 +24,7 @@ namespace april
 	public:
 		CustomCommand(void (*function)(const harray<void*>& args), const harray<void*>& args);
 
-		void execute();
+		void execute() override;
 
 	protected:
 		void (*function)(const harray<void*>& args);

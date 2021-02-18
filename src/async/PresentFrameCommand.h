@@ -22,10 +22,10 @@ namespace april
 	public:
 		PresentFrameCommand(const RenderState& state, bool systemEnabled);
 
-		bool isFinalizer() const { return true; }
-		bool isRepeatable() const { return true; }
+		bool isFinalizer() const override { return true; }
+		bool isRepeatable() const override { return true; }
 		
-		void execute();
+		void execute() override;
 
 	protected:
 		bool systemEnabled;

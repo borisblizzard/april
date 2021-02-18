@@ -24,10 +24,10 @@ namespace april
 	public:
 		ResetCommand(const RenderState& state, cgvec2i windowSize);
 
-		bool isFinalizer() const { return true; }
-		bool isSystemCommand() const { return true; }
+		bool isFinalizer() const override { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	protected:
 		gvec2i windowSize;

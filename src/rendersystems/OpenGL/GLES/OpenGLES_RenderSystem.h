@@ -45,7 +45,7 @@ namespace april
 		OpenGLES_RenderSystem();
 
 #ifdef __ANDROID__
-		bool canUseLowLevelCalls() const;
+		bool canUseLowLevelCalls() const override;
 #endif
 
 	protected:
@@ -161,36 +161,36 @@ namespace april
 		// TODOa - these need to be refactored
 		ShaderProgram* deviceState_shader;
 
-		void _deviceInit();
-		bool _deviceCreate(Options options);
-		bool _deviceDestroy();
-		void _deviceAssignWindow(Window* window);
-		void _deviceSuspend();
-		void _deviceSetupCaps();
-		void _deviceSetup();
+		void _deviceInit() override;
+		bool _deviceCreate(Options options) override;
+		bool _deviceDestroy() override;
+		void _deviceAssignWindow(Window* window) override;
+		void _deviceSuspend() override;
+		void _deviceSetupCaps() override;
+		void _deviceSetup() override;
 
 		void _createShaders();
 		void _destroyShaders();
 
-		void _updateDeviceState(RenderState* state, bool forceUpdate = false, bool ignoreRenderTarget = false);
+		void _updateDeviceState(RenderState* state, bool forceUpdate = false, bool ignoreRenderTarget = false) override;
 
-		void _setDeviceModelviewMatrix(const gmat4& matrix);
-		void _setDeviceProjectionMatrix(const gmat4& matrix);
-		void _setDeviceBlendMode(const BlendMode& blendMode);
-		void _setDeviceTexture(Texture* texture);
-		void _setDeviceColorMode(const ColorMode& colorMode, float colorModeFactor, bool useTexture, bool useColor, const Color& systemColor);
-		void _setDeviceRenderTarget(Texture* texture);
+		void _setDeviceModelviewMatrix(const gmat4& matrix) override;
+		void _setDeviceProjectionMatrix(const gmat4& matrix) override;
+		void _setDeviceBlendMode(const BlendMode& blendMode) override;
+		void _setDeviceTexture(Texture* texture) override;
+		void _setDeviceColorMode(const ColorMode& colorMode, float colorModeFactor, bool useTexture, bool useColor, const Color& systemColor) override;
+		void _setDeviceRenderTarget(Texture* texture) override;
 		void _updateShader(bool forceUpdate);
 
-		void _devicePresentFrame(bool systemEnabled);
-		void _deviceCopyRenderTargetData(Texture* source, Texture* destination);
-		void _deviceTakeScreenshot(Image::Format format, bool backBufferOnly);
+		void _devicePresentFrame(bool systemEnabled) override;
+		void _deviceCopyRenderTargetData(Texture* source, Texture* destination) override;
+		void _deviceTakeScreenshot(Image::Format format, bool backBufferOnly) override;
 
-		void _setGlTextureEnabled(bool enabled);
-		void _setGlColorEnabled(bool enabled);
-		void _setGlVertexPointer(int stride, const void* pointer);
-		void _setGlTexturePointer(int stride, const void* pointer);
-		void _setGlColorPointer(int stride, const void* pointer);
+		void _setGlTextureEnabled(bool enabled) override;
+		void _setGlColorEnabled(bool enabled) override;
+		void _setGlVertexPointer(int stride, const void* pointer) override;
+		void _setGlTexturePointer(int stride, const void* pointer) override;
+		void _setGlColorPointer(int stride, const void* pointer) override;
 
 	};
 	

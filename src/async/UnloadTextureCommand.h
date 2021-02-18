@@ -27,9 +27,9 @@ namespace april
 		UnloadTextureCommand(Texture* texture);
 
 		HL_DEFINE_GET(Texture*, texture, Texture);
-		bool isFinalizer() const { return true; }
+		bool isFinalizer() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	protected:
 		Texture* texture;

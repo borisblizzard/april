@@ -23,9 +23,9 @@ namespace april
 	public:
 		CreateCommand(const RenderSystem::Options& options);
 
-		bool isSystemCommand() const { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	protected:
 		RenderSystem::Options options;

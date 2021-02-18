@@ -29,9 +29,9 @@ namespace april
 		~OpenGLES2_RenderSystem();
 
 	protected:
-		Texture* _deviceCreateTexture(bool fromResource);
-		PixelShader* _deviceCreatePixelShader();
-		VertexShader* _deviceCreateVertexShader();
+		Texture* _deviceCreateTexture(bool fromResource) override;
+		PixelShader* _deviceCreatePixelShader() override;
+		VertexShader* _deviceCreateVertexShader() override;
 
 	};
 	

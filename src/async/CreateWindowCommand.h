@@ -23,9 +23,9 @@ namespace april
 	public:
 		CreateWindowCommand(int width, int height, bool fullscreen, chstr title, Window::Options options);
 
-		bool isSystemCommand() const { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	protected:
 		int width;

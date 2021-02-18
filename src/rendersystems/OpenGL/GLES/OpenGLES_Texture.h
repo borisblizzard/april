@@ -34,9 +34,9 @@ namespace april
 		unsigned int alphaTextureId;
 #endif
 
-		bool _deviceCreateTexture(unsigned char* data, int size);
-		bool _deviceDestroyTexture();
-		void _assignFormat();
+		bool _deviceCreateTexture(unsigned char* data, int size) override;
+		bool _deviceDestroyTexture() override;
+		void _assignFormat() override;
 
 	};
 

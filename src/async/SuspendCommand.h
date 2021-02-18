@@ -22,10 +22,10 @@ namespace april
 	public:
 		SuspendCommand();
 
-		bool isFinalizer() const { return true; }
-		bool isSystemCommand() const { return true; }
+		bool isFinalizer() const override { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	};
 	

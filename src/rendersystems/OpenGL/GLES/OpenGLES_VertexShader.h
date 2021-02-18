@@ -31,16 +31,16 @@ namespace april
 		OpenGLES_VertexShader();
 		~OpenGLES_VertexShader();
 
-		bool isLoaded() const;
+		bool isLoaded() const override;
 
-		void setConstantsB(const int* quads, unsigned int quadCount);
-		void setConstantsI(const int* quads, unsigned int quadCount);
-		void setConstantsF(const float* quads, unsigned int quadCount);
+		void setConstantsB(const int* quads, unsigned int quadCount) override;
+		void setConstantsI(const int* quads, unsigned int quadCount) override;
+		void setConstantsF(const float* quads, unsigned int quadCount) override;
 
 	protected:
 		unsigned int glShader;
 
-		bool _createShader(chstr filename, const hstream& stream);
+		bool _createShader(chstr filename, const hstream& stream) override;
 
 	};
 

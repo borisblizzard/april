@@ -86,10 +86,10 @@ namespace april
 
 		OpenGL_RenderSystem();
 
-		int getVRam() const;
+		int getVRam() const override;
 
-		Image::Format getNativeTextureFormat(Image::Format format) const;
-		unsigned int getNativeColorUInt(const april::Color& color) const;
+		Image::Format getNativeTextureFormat(Image::Format format) const override;
+		unsigned int getNativeColorUInt(const april::Color& color) const override;
 
 	protected:
 		bool blendSeparationSupported;
@@ -101,30 +101,30 @@ namespace april
 		int deviceState_colorStride;
 		const void* deviceState_colorPointer;
 
-		void _deviceInit();
-		bool _deviceCreate(Options options);
-		bool _deviceDestroy();
-		void _deviceAssignWindow(Window* window);
-		void _deviceSetupCaps();
-		void _deviceSetup();
+		void _deviceInit() override;
+		bool _deviceCreate(Options options) override;
+		bool _deviceDestroy() override;
+		void _deviceAssignWindow(Window* window) override;
+		void _deviceSetupCaps() override;
+		void _deviceSetup() override;
 
-		void _deviceChangeResolution(int width, int height, bool fullscreen);
+		void _deviceChangeResolution(int width, int height, bool fullscreen) override;
 
-		void _setDeviceViewport(cgrecti rect);
-		void _setDeviceDepthBuffer(bool enabled, bool writeEnabled);
-		void _setDeviceRenderMode(bool useTexture, bool useColor);
-		void _setDeviceTexture(Texture* texture);
-		void _setDeviceTextureFilter(const Texture::Filter& textureFilter);
-		void _setDeviceTextureAddressMode(const Texture::AddressMode& textureAddressMode);
-		void _setDeviceBlendMode(const BlendMode& blendMode);
+		void _setDeviceViewport(cgrecti rect) override;
+		void _setDeviceDepthBuffer(bool enabled, bool writeEnabled) override;
+		void _setDeviceRenderMode(bool useTexture, bool useColor) override;
+		void _setDeviceTexture(Texture* texture) override;
+		void _setDeviceTextureFilter(const Texture::Filter& textureFilter) override;
+		void _setDeviceTextureAddressMode(const Texture::AddressMode& textureAddressMode) override;
+		void _setDeviceBlendMode(const BlendMode& blendMode) override;
 
-		void _deviceClear(bool depth);
-		void _deviceClear(const Color& color, bool depth);
-		void _deviceClearDepth();
-		void _deviceRender(const RenderOperation& renderOperation, const PlainVertex* vertices, int count);
-		void _deviceRender(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count);
-		void _deviceRender(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count);
-		void _deviceRender(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count);
+		void _deviceClear(bool depth) override;
+		void _deviceClear(const Color& color, bool depth) override;
+		void _deviceClearDepth() override;
+		void _deviceRender(const RenderOperation& renderOperation, const PlainVertex* vertices, int count) override;
+		void _deviceRender(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count) override;
+		void _deviceRender(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count) override;
+		void _deviceRender(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count) override;
 
 		void _setDeviceVertexPointer(int stride, const void* pointer, bool forceUpdate = false);
 		void _setDeviceTexturePointer(int stride, const void* pointer, bool forceUpdate = false);

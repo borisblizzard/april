@@ -25,9 +25,9 @@ namespace april
 		DestroyTextureCommand(Texture* texture);
 		~DestroyTextureCommand();
 
-		bool isSystemCommand() const { return true; }
+		bool isSystemCommand() const override { return true; }
 
-		void execute();
+		void execute() override;
 
 	protected:
 		bool executed;
