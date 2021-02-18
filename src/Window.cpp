@@ -931,7 +931,7 @@ namespace april
 		this->touchesEvents += TouchesEvent(currentTouches);
 	}
 
-	void Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, Button buttonCode, float axisValue)
+	void Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue)
 	{
 		hmutex::ScopeLock lock(&this->eventMutex);
 		this->controllerEvents += ControllerEvent(type, controllerIndex, buttonCode, axisValue);

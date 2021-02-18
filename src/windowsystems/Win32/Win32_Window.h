@@ -50,7 +50,7 @@ namespace april
 		bool update(float timeDelta);
 		void checkEvents();
 
-		void queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue);
+		void queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue) override;
 
 		static LRESULT CALLBACK childProcessCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 		

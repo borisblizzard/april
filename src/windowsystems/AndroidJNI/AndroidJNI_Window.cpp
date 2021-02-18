@@ -110,7 +110,7 @@ namespace april
 		Window::queueTouchInput(type, index, position);
 	}
 
-	void AndroidJNI_Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, Button buttonCode, float axisValue)
+	void AndroidJNI_Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue)
 	{
 		this->queueInputModeChange(InputMode::Controller);
 		Window::queueControllerInput(type, controllerIndex, buttonCode, axisValue);

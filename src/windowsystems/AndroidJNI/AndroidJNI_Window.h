@@ -41,7 +41,7 @@ namespace april
 		bool update(float timeDelta) override;
 		
 		void queueTouchInput(TouchEvent::Type type, int index, cgvec2f position) override;
-		void queueControllerInput(ControllerEvent::Type type, int controllerIndex, Button buttonCode, float axisValue) override;
+		void queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue) override;
 
 		void showVirtualKeyboard() override;
 		void hideVirtualKeyboard() override;

@@ -386,7 +386,7 @@ namespace april
 		/// @param[in] buttonCode The button code.
 		/// @param[in] axisValue The axis value.
 		/// @note This is mostly used internally, but it can also be used to simulate input.
-		virtual void queueControllerInput(ControllerEvent::Type type, int controllerIndex, Button buttonCode, float axisValue);
+		virtual void queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue);
 		/// @brief Queues a motion event for processing before the start of the next frame.
 		/// @param[in] type The event type.
 		/// @param[in] motionVector Motion data vector.
