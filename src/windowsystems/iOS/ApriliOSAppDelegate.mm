@@ -48,7 +48,7 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 	setlocale(LC_ALL, __APRIL_DEFAULT_LOCALE); // make sure the app uses a neutral locale that includes all specifics for all locales
 	hlog::write(april::logTag, "Creating iOS window");
 #if TARGET_IPHONE_SIMULATOR
-	NSLog(@"[april] iOS Simulator document location: %@",[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
+	NSLog(@"[april] iOS Simulator document location: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
 #endif
 	[[NSFileManager defaultManager] changeCurrentDirectoryPath: [[NSBundle mainBundle] resourcePath]];
     // figure out prefered app orientations
@@ -100,12 +100,13 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 
 - (void)performInit:(id)object
 {
-	((EAGLView*)viewController.view)->app_started = 1;
-	[(EAGLView*)viewController.view startAnimation];
+	EAGLView* eaglView = (EAGLView*)viewController.view;
+	eaglView->app_started = 1;
+	[eaglView startAnimation];
 	april::application->init();
 }
 
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+- (void)applicationDidReceiveMemoryWarning:(UIApplication*)application
 {
 	hlog::write(april::logTag, "Received iOS memory warning!");
 	if (april::window != NULL)
@@ -114,7 +115,7 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 	}
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
+- (void)applicationWillTerminate:(UIApplication*)application
 {
 	if (![[viewController.view subviews] count]) 
 	{
@@ -141,7 +142,8 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 - (BOOL)application:(UIApplication*)application openURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication annotation:(id)annotation
 {
 	NSString* str = [url absoluteString];
-	hstr urlstr = [str UTF8String], srcAppStr = [sourceApplication UTF8String];
+	hstr urlstr = [str UTF8String];
+	hstr srcAppStr = [sourceApplication UTF8String];
 	BOOL result = NO;
 	foreach (iOSUrlCallback, it, gUrlCallbacks)
 	{
@@ -153,7 +155,7 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 	return result;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)applicationWillResignActive:(UIApplication*)application
 {
 	if (![[viewController.view subviews] count]) 
 	{
@@ -161,7 +163,7 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 	}
 	if ([viewController.view isKindOfClass:[EAGLView class]]) 
 	{
-		EAGLView *glview = (EAGLView*)viewController.view;
+		EAGLView* glview = (EAGLView*)viewController.view;
 		[glview applicationWillResignActive:application];
 		[glview stopAnimation];
 	}
@@ -178,14 +180,14 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 	}
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
+- (void)applicationDidEnterBackground:(UIApplication*)application
 {
 	// for our purposes, we don't need to differentiate entering background
 	// from resigning activity
 	[self applicationWillResignActive:application];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)applicationDidBecomeActive:(UIApplication*)application
 {
 	if (![[viewController.view subviews] count]) 
 	{
@@ -193,13 +195,23 @@ extern UIInterfaceOrientationMask gSupportedOrientations;
 	}
 	if ([viewController.view isKindOfClass:[EAGLView class]]) 
 	{
-		EAGLView *glview = (EAGLView*)viewController.view;
+		EAGLView* glview = (EAGLView*)viewController.view;
 		[glview applicationDidBecomeActive:application];
 		[glview startAnimation];
 	}
-}
+	if ([[viewController.view subviews] count])
+	{
+		for (EAGLView* glview in viewController.view.subviews)
+		{
+			if ([glview isKindOfClass:[EAGLView class]])
+			{
+				[glview applicationDidBecomeActive:application];
+				[glview startAnimation];
+			}
+		}
+	}}
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
+- (void)applicationWillEnterForeground:(UIApplication*)application
 {
 	// for our purposes, we don't need to differentiate entering foreground
 	// from becoming active

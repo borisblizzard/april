@@ -25,7 +25,7 @@ static UIImageView* mImageView = NULL;
 
 UIInterfaceOrientationMask gSupportedOrientations = UIInterfaceOrientationMaskLandscape;
 
--(id)init
+- (id)init
 {
 	self = [super init];
 	return self;
@@ -216,13 +216,13 @@ UIInterfaceOrientationMask gSupportedOrientations = UIInterfaceOrientationMaskLa
 	return nsDefaultPngName;
 }
 
--(UIInterfaceOrientation)getDeviceOrientation
+- (UIInterfaceOrientation)getDeviceOrientation
 {
 	return [[UIApplication sharedApplication] statusBarOrientation];
 }
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
--(void)loadView
+- (void)loadView
 {
 	CGRect frame = getScreenBounds();
 	glview = [[[EAGLView alloc] initWithFrame:frame] autorelease];
@@ -275,11 +275,11 @@ UIInterfaceOrientationMask gSupportedOrientations = UIInterfaceOrientationMaskLa
 }
 */
 
--(void)animationWillStart:(NSString*)animationID context:(void*)context
+- (void)animationWillStart:(NSString*)animationID context:(void*)context
 {
 }
 
--(void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+- (void)animationDidStop:(NSString*)animationID finished:(NSNumber*)finished context:(void*)context
 {
 	if ([animationID isEqual: @"FadeOut"])
 	{
@@ -290,7 +290,7 @@ UIInterfaceOrientationMask gSupportedOrientations = UIInterfaceOrientationMaskLa
 	}
 }
 
--(void)removeImageView:(bool)fast
+- (void)removeImageView:(bool)fast
 {
 	if (mImageView != nil)
 	{
@@ -305,24 +305,24 @@ UIInterfaceOrientationMask gSupportedOrientations = UIInterfaceOrientationMaskLa
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
--(void)viewDidLoad
+- (void)viewDidLoad
 {
 	[super viewDidLoad];
 }
 
--(NSUInteger)supportedInterfaceOrientations // used in iOS6+ only
+- (NSUInteger)supportedInterfaceOrientations // used in iOS6+ only
 {
     return gSupportedOrientations;
 }
 
--(void)didReceiveMemoryWarning
+- (void)didReceiveMemoryWarning
 {
 	// Releases the view if it doesn't have a superview.
 	[super didReceiveMemoryWarning];
 	// Release any cached data, images, etc that aren't in use.
 }
 
--(void)dealloc
+- (void)dealloc
 {
 	[super dealloc];
 }

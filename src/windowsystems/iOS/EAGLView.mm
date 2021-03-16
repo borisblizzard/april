@@ -53,7 +53,7 @@
 }
 
 // Handles the start of a touch
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event
 {
 	if (april::window != NULL)
 	{
@@ -62,7 +62,7 @@
 }
 
 // Handles the end of a touch event when the touch is a tap.
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent *)event
 {
 	if (april::window != NULL)
 	{
@@ -72,7 +72,7 @@
 
 // Called if touches are cancelled and need to be undone. 
 // On iPhone, happens when 5 fingers are pressed.
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent *)event
 {
 	if (april::window != NULL)
 	{
@@ -81,7 +81,7 @@
 }
 
 // Handles the movement of a touch event. 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent *)event
 {
 	if (april::window != NULL)
 	{
@@ -194,7 +194,7 @@
 	}
 }
 
--(void)deviceOrientationDidChange:(id)sender
+- (void)deviceOrientationDidChange:(id)sender
 {
 }
 
@@ -232,7 +232,7 @@
 	}
 }
 
--(void)updateSensors
+- (void)updateSensors
 {
 	if (april::window == NULL)
 	{
@@ -365,7 +365,6 @@
 	return YES;
 }
 
-
 - (void)destroyFramebuffer
 {
 	glDeleteFramebuffers(1, &viewFramebuffer);
@@ -437,7 +436,7 @@
 	[textField endEditing:YES];
 }
 
-- (BOOL)textField:(UITextField *)_textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string // return NO to not change text
+- (BOOL)textField:(UITextField*)_textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string // return NO to not change text
 {
 	if (april::window == NULL)
 	{
@@ -462,7 +461,7 @@
 	return NO;
 }
 
--(void)applicationDidBecomeActive:(UIApplication*)app
+- (void)applicationDidBecomeActive:(UIApplication*)app
 {
 	if (april::window != NULL)
 	{
@@ -470,7 +469,7 @@
 	}
 }
 
--(void)applicationWillResignActive:(UIApplication*)app
+- (void)applicationWillResignActive:(UIApplication*)app
 {
 	if (april::window != NULL)
 	{
