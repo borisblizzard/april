@@ -39,7 +39,7 @@ public class GLSurfaceView extends android.opengl.GLSurfaceView
 		this.setEGLContextClientVersion(2);
 		this.setPreserveEGLContextOnPause(false);
 		this.setEGLConfigChooser(8, 8, 8, 8, 0, 0);
-		this.getHolder().setFormat(PixelFormat.RGBA_8888);
+		this.getHolder().setFormat(PixelFormat.RGBX_8888);
 		this.renderer = new com.april.Renderer();
 		this.setRenderer(this.renderer);
 		// view has to be properly focusable to be able to process input
