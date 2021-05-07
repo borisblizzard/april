@@ -101,7 +101,7 @@ namespace april
 		}
 	}
 
-	void AndroidJNI_Window::queueTouchInput(TouchEvent::Type type, int index, cgvec2f position)
+	void AndroidJNI_Window::queueTouchInput(const TouchEvent::Type& type, int index, cgvec2f position)
 	{
 		if (type == TouchEvent::Type::Down || type == TouchEvent::Type::Up)
 		{
@@ -110,7 +110,7 @@ namespace april
 		Window::queueTouchInput(type, index, position);
 	}
 
-	void AndroidJNI_Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue)
+	void AndroidJNI_Window::queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue)
 	{
 		this->queueInputModeChange(InputMode::Controller);
 		Window::queueControllerInput(type, controllerIndex, buttonCode, axisValue);

@@ -30,6 +30,7 @@
 #include <april/UpdateDelegate.h>
 #include <april/Window.h>
 #include <hltypes/hlog.h>
+#include <hltypes/hthread.h>
 
 #define LOG_TAG "demo_3d"
 
@@ -59,20 +60,20 @@ public:
 
 	HL_DEFINE_IS(pressed, Pressed);
 
-	void onMouseDown(april::Key keyCode)
+	void onMouseDown(april::Key keyCode) override
 	{
 		this->pressed = true;
 		clickPosition = april::window->getCursorPosition();
 	}
 
-	void onMouseUp(april::Key keyCode)
+	void onMouseUp(april::Key keyCode) override
 	{
 		this->pressed = false;
 		cameraPosition += april::window->getCursorPosition() - clickPosition;
 		cameraPosition.y = hclamp(cameraPosition.y, -90.0f, 90.0f);
 	}
 
-	void onMouseMove()
+	void onMouseMove() override
 	{
 	}
 
@@ -90,8 +91,9 @@ public:
 	{
 	}
 
-	bool onUpdate(float timeDelta)
+	bool onUpdate(float timeDelta) override
 	{
+		hthread::sleep(20);
 		static gvec3f eye(0.0f, 0.0f, 6.0f);
 		static gvec3f target(0.0f, 0.0f, 0.0f);
 		static gvec3f up(0.0f, 1.0f, 0.0f);
@@ -121,7 +123,7 @@ public:
 	{
 	}
 
-	void onWindowSizeChanged(int width, int height, bool fullScreen)
+	void onWindowSizeChanged(int width, int height, bool fullScreen) override
 	{
 		hlog::writef(LOG_TAG, "window size changed: %dx%d", width, height);
 		april::rendersys->setViewport(drawRect);

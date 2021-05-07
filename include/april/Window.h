@@ -367,31 +367,31 @@ namespace april
 		/// @param[in] position The pointer position.
 		/// @param[in] keyCode The key code.
 		/// @note This is mostly used internally, but it can also be used to simulate input.
-		virtual void queueMouseInput(MouseEvent::Type type, cgvec2f position, Key keyCode);
+		virtual void queueMouseInput(const MouseEvent::Type& type, cgvec2f position, Key keyCode);
 		/// @brief Queues a keyboard event for processing before the start of the next frame.
 		/// @param[in] type The event type.
 		/// @param[in] keyCode The key code.
 		/// @param[in] charCode The character Unicode value.
 		/// @note This is mostly used internally, but it can also be used to simulate input.
-		virtual void queueKeyInput(KeyEvent::Type type, Key keyCode, unsigned int charCode);
+		virtual void queueKeyInput(const KeyEvent::Type& type, Key keyCode, unsigned int charCode);
 		/// @brief Queues a touch event for processing before the start of the next frame.
 		/// @param[in] type The event type.
 		/// @param[in] index The pointer index.
 		/// @param[in] position The pointer position.
 		/// @note This is mostly used internally, but it can also be used to simulate input.
-		virtual void queueTouchInput(TouchEvent::Type type, int index, cgvec2f position);
+		virtual void queueTouchInput(const TouchEvent::Type& type, int index, cgvec2f position);
 		/// @brief Queues a controller event for processing before the start of the next frame.
 		/// @param[in] type The event type.
 		/// @param[in] controllerIndex Index of the controller.
 		/// @param[in] buttonCode The button code.
 		/// @param[in] axisValue The axis value.
 		/// @note This is mostly used internally, but it can also be used to simulate input.
-		virtual void queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue);
+		virtual void queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue);
 		/// @brief Queues a motion event for processing before the start of the next frame.
 		/// @param[in] type The event type.
 		/// @param[in] motionVector Motion data vector.
 		/// @note This is mostly used internally, but it can also be used to simulate input.
-		virtual void queueMotionInput(MotionEvent::Type type, cgvec3f motionVector);
+		virtual void queueMotionInput(const MotionEvent::Type& type, cgvec3f motionVector);
 
 		/// @brief Performs the update of one frame.
 		/// @param[in] timeDelta Time that has passed since the last frame.

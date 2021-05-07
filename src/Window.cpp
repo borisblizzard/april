@@ -860,19 +860,19 @@ namespace april
 		this->genericEvents += GenericEvent(GenericEvent::Type::Screenshot, image);
 	}
 
-	void Window::queueMouseInput(MouseEvent::Type type, cgvec2f position, Key keyCode)
+	void Window::queueMouseInput(const MouseEvent::Type& type, cgvec2f position, Key keyCode)
 	{
 		hmutex::ScopeLock lock(&this->eventMutex);
 		this->mouseEvents += MouseEvent(type, position, keyCode);
 	}
 
-	void Window::queueKeyInput(KeyEvent::Type type, Key keyCode, unsigned int charCode)
+	void Window::queueKeyInput(const KeyEvent::Type& type, Key keyCode, unsigned int charCode)
 	{
 		hmutex::ScopeLock lock(&this->eventMutex);
 		this->keyEvents += KeyEvent(type, keyCode, charCode);
 	}
 
-	void Window::queueTouchInput(TouchEvent::Type type, int index, cgvec2f position)
+	void Window::queueTouchInput(const TouchEvent::Type& type, int index, cgvec2f position)
 	{
 		hmutex::ScopeLock lock(&this->eventMutex);
 		harray<int> indices = this->indexedTouches.keys();
@@ -931,13 +931,13 @@ namespace april
 		this->touchesEvents += TouchesEvent(currentTouches);
 	}
 
-	void Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue)
+	void Window::queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue)
 	{
 		hmutex::ScopeLock lock(&this->eventMutex);
 		this->controllerEvents += ControllerEvent(type, controllerIndex, buttonCode, axisValue);
 	}
 
-	void Window::queueMotionInput(MotionEvent::Type type, cgvec3f motionVector)
+	void Window::queueMotionInput(const MotionEvent::Type& type, cgvec3f motionVector)
 	{
 		hmutex::ScopeLock lock(&this->eventMutex);
 		this->motionEvents += MotionEvent(type, motionVector);

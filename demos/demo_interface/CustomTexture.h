@@ -34,15 +34,15 @@ namespace april
 		D3DPOOL d3dPool;
 		DWORD d3dUsage;
 
-		bool _deviceCreateTexture(unsigned char* data, int size);
-		bool _deviceDestroyTexture();
-		void _assignFormat();
+		bool _deviceCreateTexture(unsigned char* data, int size) override;
+		bool _deviceDestroyTexture() override;
+		void _assignFormat() override;
 
 		IDirect3DSurface9* _getSurface();
 
-		Lock _tryLockSystem(int x, int y, int w, int h);
-		bool _unlockSystem(Lock& lock, bool update);
-		bool _uploadToGpu(int sx, int sy, int sw, int sh, int dx, int dy, unsigned char* srcData, int srcWidth, int srcHeight, Image::Format srcFormat);
+		Lock _tryLockSystem(int x, int y, int w, int h) override;
+		bool _unlockSystem(Lock& lock, bool update) override;
+		bool _uploadToGpu(int sx, int sy, int sw, int sh, int dx, int dy, unsigned char* srcData, int srcWidth, int srcHeight, Image::Format srcFormat) override;
 
 	};
 

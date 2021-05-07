@@ -103,7 +103,7 @@ harray<Ball> balls;
 
 class UpdateDelegate : public april::UpdateDelegate
 {
-	bool onUpdate(float timeDelta)
+	bool onUpdate(float timeDelta) override
 	{	
 		april::rendersys->clear();
 		april::rendersys->setOrthoProjection(drawRect);
@@ -125,7 +125,7 @@ public:
 	{
 	}
 
-	void onWindowSizeChanged(int width, int height, bool fullScreen)
+	void onWindowSizeChanged(int width, int height, bool fullScreen) override
 	{
 		hlog::writef(LOG_TAG, "window size changed: %dx%d", width, height);
 		april::rendersys->setViewport(drawRect);

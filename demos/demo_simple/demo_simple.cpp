@@ -68,7 +68,7 @@ bool mousePressed = false;
 
 class UpdateDelegate : public april::UpdateDelegate
 {
-	bool onUpdate(float timeDelta)
+	bool onUpdate(float timeDelta) override
 	{
 		april::rendersys->clear();
 		april::rendersys->setOrthoProjection(drawRect);
@@ -108,7 +108,7 @@ public:
 	{
 	}
 
-	void onWindowSizeChanged(int width, int height, bool fullScreen)
+	void onWindowSizeChanged(int width, int height, bool fullScreen) override
 	{
 		hlog::writef(LOG_TAG, "window size changed: %dx%d", width, height);
 		april::rendersys->setViewport(drawRect);
@@ -118,21 +118,21 @@ public:
 
 class MouseDelegate : public april::MouseDelegate
 {
-	void onMouseDown(april::Key key)
+	void onMouseDown(april::Key key) override
 	{
 		offset = april::window->getCursorPosition();
 		hlog::writef(LOG_TAG, "- DOWN x: %4.0f y: %4.0f button: %d", offset.x, offset.y, key.value);
 		mousePressed = true;
 	}
 
-	void onMouseUp(april::Key key)
+	void onMouseUp(april::Key key) override
 	{
 		gvec2f position = april::window->getCursorPosition();
 		hlog::writef(LOG_TAG, "- UP   x: %4.0f y: %4.0f button: %d", position.x, position.y, key.value);
 		mousePressed = false;
 	}
 
-	void onMouseMove()
+	void onMouseMove() override
 	{
 		gvec2f position = april::window->getCursorPosition();
 		hlog::writef(LOG_TAG, "- MOVE x: %4.0f y: %4.0f", position.x, position.y);
@@ -142,7 +142,7 @@ class MouseDelegate : public april::MouseDelegate
 		}
 	}
 
-	void onMouseCancel(april::Key key)
+	void onMouseCancel(april::Key key) override
 	{
 		hlog::writef(LOG_TAG, "- CANCEL button: %d", key.value);
 	}

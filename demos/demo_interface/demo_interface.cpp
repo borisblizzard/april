@@ -44,7 +44,7 @@ static bool mousePressed = false;
 
 class UpdateDelegate : public april::UpdateDelegate
 {
-	bool onUpdate(float timeDelta)
+	bool onUpdate(float timeDelta) override
 	{
 		april::rendersys->clear();
 		april::rendersys->setOrthoProjection(drawRect);
@@ -69,18 +69,18 @@ public:
 
 class MouseDelegate : public april::MouseDelegate
 {
-	void onMouseDown(april::Key key)
+	void onMouseDown(april::Key key) override
 	{
 		offset = april::window->getCursorPosition();
 		mousePressed = true;
 	}
 
-	void onMouseUp(april::Key key)
+	void onMouseUp(april::Key key) override
 	{
 		mousePressed = false;
 	}
 
-	void onMouseMove()
+	void onMouseMove() override
 	{
 		if (mousePressed)
 		{

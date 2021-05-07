@@ -167,7 +167,7 @@ Bone bone(gvec2f(256, 256), 160);
 
 class UpdateDelegate : public april::UpdateDelegate
 {
-	bool onUpdate(float timeDelta)
+	bool onUpdate(float timeDelta) override
 	{
 		// clear the screen and set orthographic projection
 		april::rendersys->clear();
@@ -269,7 +269,7 @@ public:
 	{
 	}
 
-	void onWindowSizeChanged(int width, int height, bool fullScreen)
+	void onWindowSizeChanged(int width, int height, bool fullScreen) override
 	{
 		//this is called when the window size is changed
 		april::rendersys->setViewport(drawRect);
@@ -279,20 +279,20 @@ public:
 
 class MouseDelegate : public april::MouseDelegate
 {
-	void onMouseDown(april::Key key)
+	void onMouseDown(april::Key key) override
 	{
 		offset = april::window->getCursorPosition();
 		bone.onClick(offset);
 		mousePressed = true;
 	}
 
-	void onMouseUp(april::Key key)
+	void onMouseUp(april::Key key) override
 	{
 		bone.onRelease();
 		mousePressed = false;
 	}
 
-	void onMouseMove()
+	void onMouseMove() override
 	{
 		gvec2f position = april::window->getCursorPosition();
 		bone.onDrag(position);
@@ -302,7 +302,7 @@ class MouseDelegate : public april::MouseDelegate
 		}
 	}
 
-	void onMouseCancel(april::Key key)
+	void onMouseCancel(april::Key key) override
 	{
 	}
 
@@ -310,7 +310,7 @@ class MouseDelegate : public april::MouseDelegate
 
 class KeyDelegate : public april::KeyDelegate
 {
-	void onKeyUp(april::Key keyCode)
+	void onKeyUp(april::Key keyCode) override
 	{
 		if (keyCode == april::Key::F4)
 		{

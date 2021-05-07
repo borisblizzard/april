@@ -33,8 +33,8 @@ namespace april
 
 		int getVRam() const;
 
-		Image::Format getNativeTextureFormat(Image::Format format) const;
-		unsigned int getNativeColorUInt(const Color& color) const;
+		Image::Format getNativeTextureFormat(Image::Format format) const override;
+		unsigned int getNativeColorUInt(const Color& color) const override;
 
 	protected:
 		IDirect3D9* d3d;
@@ -43,44 +43,44 @@ namespace april
 		IDirect3DSurface9* backBuffer;
 		HWND childHWnd;
 
-		void _deviceInit();
-		bool _deviceCreate(Options options);
-		bool _deviceDestroy();
-		void _deviceAssignWindow(Window* window);
-		void _deviceReset();
-		void _deviceSetupCaps();
-		void _deviceSetup();
-		void _deviceSetupDisplayModes();
+		void _deviceInit() override;
+		bool _deviceCreate(Options options) override;
+		bool _deviceDestroy() override;
+		void _deviceAssignWindow(Window* window) override;
+		void _deviceReset() override;
+		void _deviceSetupCaps() override;
+		void _deviceSetup() override;
+		void _deviceSetupDisplayModes() override;
 
 		void _tryAssignChildWindow();
 		void _tryUnassignChildWindow();
 
-		Texture* _deviceCreateTexture(bool fromResource);
+		Texture* _deviceCreateTexture(bool fromResource) override;
 
-		void _deviceChangeResolution(int width, int height, bool fullscreen);
+		void _deviceChangeResolution(int width, int height, bool fullscreen) override;
 
-		void _setDeviceViewport(cgrecti rect);
-		void _setDeviceModelviewMatrix(const gmat4& matrix);
-		void _setDeviceProjectionMatrix(const gmat4& matrix);
-		void _setDeviceDepthBuffer(bool enabled, bool writeEnabled);
-		void _setDeviceRenderMode(bool useTexture, bool useColor);
-		void _setDeviceTexture(Texture* texture);
-		void _setDeviceTextureFilter(const Texture::Filter& textureFilter);
-		void _setDeviceTextureAddressMode(const Texture::AddressMode& textureAddressMode);
-		void _setDeviceBlendMode(const BlendMode& blendMode);
-		void _setDeviceColorMode(const ColorMode& colorMode, float colorModeFactor, bool useTexture, bool useColor, const Color& systemColor);
-		void _setDeviceRenderTarget(Texture* texture);
+		void _setDeviceViewport(cgrecti rect) override;
+		void _setDeviceModelviewMatrix(const gmat4& matrix) override;
+		void _setDeviceProjectionMatrix(const gmat4& matrix) override;
+		void _setDeviceDepthBuffer(bool enabled, bool writeEnabled) override;
+		void _setDeviceRenderMode(bool useTexture, bool useColor) override;
+		void _setDeviceTexture(Texture* texture) override;
+		void _setDeviceTextureFilter(const Texture::Filter& textureFilter) override;
+		void _setDeviceTextureAddressMode(const Texture::AddressMode& textureAddressMode) override;
+		void _setDeviceBlendMode(const BlendMode& blendMode) override;
+		void _setDeviceColorMode(const ColorMode& colorMode, float colorModeFactor, bool useTexture, bool useColor, const Color& systemColor) override;
+		void _setDeviceRenderTarget(Texture* texture) override;
 
-		void _deviceClear(bool depth);
-		void _deviceClear(const Color& color, bool depth);
-		void _deviceClearDepth();
-		void _deviceRender(const RenderOperation& renderOperation, const PlainVertex* vertices, int count);
-		void _deviceRender(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count);
-		void _deviceRender(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count);
-		void _deviceRender(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count);
-		void _devicePresentFrame(bool systemEnabled);
-		void _deviceCopyRenderTargetData(Texture* source, Texture* destination);
-		void _deviceTakeScreenshot(Image::Format format, bool backBufferOnly);
+		void _deviceClear(bool depth) override;
+		void _deviceClear(const Color& color, bool depth) override;
+		void _deviceClearDepth() override;
+		void _deviceRender(const RenderOperation& renderOperation, const PlainVertex* vertices, int count) override;
+		void _deviceRender(const RenderOperation& renderOperation, const TexturedVertex* vertices, int count) override;
+		void _deviceRender(const RenderOperation& renderOperation, const ColoredVertex* vertices, int count) override;
+		void _deviceRender(const RenderOperation& renderOperation, const ColoredTexturedVertex* vertices, int count) override;
+		void _devicePresentFrame(bool systemEnabled) override;
+		void _deviceCopyRenderTargetData(Texture* source, Texture* destination) override;
+		void _deviceTakeScreenshot(Image::Format format, bool backBufferOnly) override;
 
 		static D3DPRIMITIVETYPE _dx9RenderOperations[];
 

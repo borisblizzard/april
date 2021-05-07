@@ -36,13 +36,13 @@ namespace april
 		bool isCursorVisible() const;
 		HL_DEFINE_GET(int, width, Width);
 		HL_DEFINE_GET(int, height, Height);
-		void* getBackendId() const;
+		void* getBackendId() const override;
 		HCURSOR getCursorHandle() const;
 
-		bool update(float timeDelta);
+		bool update(float timeDelta) override;
 		void checkEvents();
 
-		void queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue);
+		void queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue) override;
 
 		static LRESULT CALLBACK childProcessCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 		
@@ -58,8 +58,8 @@ namespace april
 		bool connectedControllers[XUSER_MAX_COUNT];
 #endif
 
-		void _systemCreate(int width, int height, bool fullscreen, chstr title, Window::Options options);
-		void _systemDestroy();
+		void _systemCreate(int width, int height, bool fullscreen, chstr title, Window::Options options) override;
+		void _systemDestroy() override;
 		
 #ifdef _CUSTOM_XINPUT
 		void _checkXInputControllerStates();
@@ -69,7 +69,7 @@ namespace april
 		void _refreshCursor();
 		void _updateCursorPosition();
 		
-		void _systemSetResolution(int width, int height, bool fullscreen);
+		void _systemSetResolution(int width, int height, bool fullscreen) override;
 
 		static LRESULT CALLBACK _mainProcessCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

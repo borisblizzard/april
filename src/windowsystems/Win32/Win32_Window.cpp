@@ -592,7 +592,7 @@ namespace april
 		height = rect.bottom - rect.top;
 	}
 
-	void Win32_Window::queueControllerInput(ControllerEvent::Type type, int controllerIndex, const Button& buttonCode, float axisValue)
+	void Win32_Window::queueControllerInput(const ControllerEvent::Type& type, int controllerIndex, const Button& buttonCode, float axisValue)
 	{
 		if (type != ControllerEvent::Type::Connected && type != ControllerEvent::Type::Disconnected)
 		{

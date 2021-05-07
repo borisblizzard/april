@@ -127,7 +127,7 @@ void draw_line(int x_start, int y_start, int x_end, int y_end, std::string symbo
 
 class UpdateDelegate : public april::UpdateDelegate
 {
-	bool onUpdate(float timeDelta)
+	bool onUpdate(float timeDelta) override
 	{	
 		april::rendersys->clear();
 		april::rendersys->setOrthoProjection(drawRect);
@@ -199,7 +199,7 @@ public:
 	{
 	}
 
-	void onWindowSizeChanged(int width, int height, bool fullScreen)
+	void onWindowSizeChanged(int width, int height, bool fullScreen) override
 	{
 		hlog::writef(LOG_TAG, "window size changed: %dx%d", width, height);
 		april::rendersys->setViewport(drawRect);
@@ -209,7 +209,7 @@ public:
 
 class MouseDelegate : public april::MouseDelegate
 {
-	void onMouseUp(april::Key button)
+	void onMouseUp(april::Key button) override
 	{
 		gvec2f cursorPosition = april::window->getCursorPosition();
 		float x = cursorPosition.x;
@@ -347,8 +347,8 @@ class MouseDelegate : public april::MouseDelegate
 			victory = 8;
 	}
 
-	void onMouseDown(april::Key button) { }
-	void onMouseMove() { }
+	void onMouseDown(april::Key button) override { }
+	void onMouseMove() override { }
 
 };
 
