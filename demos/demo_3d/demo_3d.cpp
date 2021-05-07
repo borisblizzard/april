@@ -30,7 +30,6 @@
 #include <april/UpdateDelegate.h>
 #include <april/Window.h>
 #include <hltypes/hlog.h>
-#include <hltypes/hthread.h>
 
 #define LOG_TAG "demo_3d"
 
@@ -93,7 +92,6 @@ public:
 
 	bool onUpdate(float timeDelta) override
 	{
-		hthread::sleep(20);
 		static gvec3f eye(0.0f, 0.0f, 6.0f);
 		static gvec3f target(0.0f, 0.0f, 0.0f);
 		static gvec3f up(0.0f, 1.0f, 0.0f);
