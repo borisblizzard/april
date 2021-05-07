@@ -80,7 +80,7 @@ namespace april
 		this->tripleBuffering = true;
 #endif
 		this->clearOnSuspend = false;
-#ifndef _ANDROID
+#ifndef __ANDROID__
 		this->intermediateRenderTexture = false;
 #else // this is required for Android JNI
 		this->intermediateRenderTexture = true;
