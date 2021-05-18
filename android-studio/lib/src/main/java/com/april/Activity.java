@@ -68,6 +68,7 @@ public class Activity extends FragmentActivity implements IActivityEvents
 	public List<ICallback3<Boolean, Integer, Integer, Intent>> callbacksOnActivityResult = null;
 	public List<ICallback1<Void, Intent>> callbacksOnNewIntent = null;
 	public List<ICallback<Boolean>> callbacksOnBackPressed = null;
+	public List<ICallback1<Void, Boolean>> callbacksOnWindowFocusChanged = null;
 	public List<ICallback1<Void, Configuration>> callbacksOnConfigurationChanged = null;
 	public List<ICallback3<Boolean, Integer, String[], Integer[]>> callbacksOnRequestPermissionsResult = null;
 	public List<ICallback<Void>> callbacksOnDrawFrame = null;
@@ -83,19 +84,20 @@ public class Activity extends FragmentActivity implements IActivityEvents
 		this.ignoredKeys.add(KeyEvent.KEYCODE_VOLUME_UP);
 		this.ignoredKeys.add(KeyEvent.KEYCODE_VOLUME_MUTE);
 		this.systemSettingsObserver = new SystemSettingsObserver();
-		this.callbacksOnCreate = new ArrayList<ICallback1<Void, Bundle>>();
-		this.callbacksOnStart = new ArrayList<ICallback<Void>>();
-		this.callbacksOnResume = new ArrayList<ICallback<Void>>();
-		this.callbacksOnPause = new ArrayList<ICallback<Void>>();
-		this.callbacksOnStop = new ArrayList<ICallback<Void>>();
-		this.callbacksOnDestroy = new ArrayList<ICallback<Void>>();
-		this.callbacksOnRestart = new ArrayList<ICallback<Void>>();
-		this.callbacksOnActivityResult = new ArrayList<ICallback3<Boolean, Integer, Integer, Intent>>();
-		this.callbacksOnNewIntent = new ArrayList<ICallback1<Void, Intent>>();
-		this.callbacksOnBackPressed = new ArrayList<ICallback<Boolean>>();
-		this.callbacksOnConfigurationChanged = new ArrayList<ICallback1<Void, Configuration>>();
-		this.callbacksOnRequestPermissionsResult = new ArrayList<ICallback3<Boolean, Integer, String[], Integer[]>>();
-		this.callbacksOnDrawFrame = new ArrayList<ICallback<Void>>();
+		this.callbacksOnCreate = new ArrayList<>();
+		this.callbacksOnStart = new ArrayList<>();
+		this.callbacksOnResume = new ArrayList<>();
+		this.callbacksOnPause = new ArrayList<>();
+		this.callbacksOnStop = new ArrayList<>();
+		this.callbacksOnDestroy = new ArrayList<>();
+		this.callbacksOnRestart = new ArrayList<>();
+		this.callbacksOnActivityResult = new ArrayList<>();
+		this.callbacksOnNewIntent = new ArrayList<>();
+		this.callbacksOnBackPressed = new ArrayList<>();
+		this.callbacksOnWindowFocusChanged = new ArrayList<>();
+		this.callbacksOnConfigurationChanged = new ArrayList<>();
+		this.callbacksOnRequestPermissionsResult = new ArrayList<>();
+		this.callbacksOnDrawFrame = new ArrayList<>();
 	}
 	
 	public void registerOnCreate(ICallback1<Void, Bundle> callback)
@@ -132,7 +134,7 @@ public class Activity extends FragmentActivity implements IActivityEvents
 	{
 		this.callbacksOnRestart.add(callback);
 	}
-	
+
 	public void registerOnActivityResult(ICallback3<Boolean, Integer, Integer, Intent> callback)
 	{
 		this.callbacksOnActivityResult.add(callback);
@@ -147,7 +149,12 @@ public class Activity extends FragmentActivity implements IActivityEvents
 	{
 		this.callbacksOnBackPressed.add(callback);
 	}
-	
+
+	public void registerOnWindowFocusChanged(ICallback1<Void, Boolean> callback)
+	{
+		this.callbacksOnWindowFocusChanged.add(callback);
+	}
+
 	public void registerOnConfigurationChanged(ICallback1<Void, Configuration> callback)
 	{
 		this.callbacksOnConfigurationChanged.add(callback);
@@ -490,7 +497,21 @@ public class Activity extends FragmentActivity implements IActivityEvents
 			super.onBackPressed();
 		}
 	}
-	
+
+	@Override
+	public void onWindowFocusChanged(boolean focused)
+	{
+		for (int i = 0; i < this.callbacksOnWindowFocusChanged.size(); ++i)
+		{
+			this.callbacksOnWindowFocusChanged.get(i).execute(focused);
+		}
+		super.onWindowFocusChanged(focused);
+		if (focused)
+		{
+			this.hideNavigationBar();
+		}
+	}
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfiguration)
 	{
@@ -525,16 +546,6 @@ public class Activity extends FragmentActivity implements IActivityEvents
 		super.onLowMemory();
 	}
 	
-	@Override
-	public void onWindowFocusChanged(boolean focused)
-	{
-		super.onWindowFocusChanged(focused);
-		if (focused)
-		{
-			this.hideNavigationBar();
-		}
-	}
-
 	protected GLSurfaceView createGlView()
 	{
 		return new GLSurfaceView(this);

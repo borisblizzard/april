@@ -18,6 +18,7 @@ public interface IActivityEvents
 	public void registerOnActivityResult(ICallback3<Boolean, Integer, Integer, Intent> callback);
 	public void registerOnNewIntent(ICallback1<Void, Intent> callback);
 	public void registerOnBackPressed(ICallback<Boolean> ICallback);
+	public void registerOnWindowFocusChanged(ICallback1<Void, Boolean> callback);
 	public void registerOnConfigurationChanged(ICallback1<Void, Configuration> callback);
 	public void registerOnRequestPermissionsResult(ICallback3<Boolean, Integer, String[], Integer[]> callback);
 	public void registerOnDrawFrame(ICallback<Void> callback);
