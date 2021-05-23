@@ -1013,8 +1013,6 @@
 				D1E7204216D37C0200B9C9AD /* images */,
 				D1E7204316D37C0B00B9C9AD /* timers */,
 				B4046B311ECDCA1800F85550 /* util */,
-				B40778C320C95063001E1999 /* SetWindowResolutionCommand.cpp */,
-				B40778C420C95064001E1999 /* SetWindowResolutionCommand.h */,
 				8432098A1FF4EEFF003A0539 /* Application.cpp */,
 				C9E6097C150518B400EB077F /* april.cpp */,
 				D14BF96915875F3300D31573 /* aprilUtil.cpp */,
@@ -1111,6 +1109,8 @@
 		843208EA1FF4EE23003A0539 /* async */ = {
 			isa = PBXGroup;
 			children = (
+				B40778C320C95063001E1999 /* SetWindowResolutionCommand.cpp */,
+				B40778C420C95064001E1999 /* SetWindowResolutionCommand.h */,
 				843F695E2336855A005DB54B /* CustomCommand.cpp */,
 				843F695F2336855A005DB54B /* CustomCommand.h */,
 				1B21008320F4CC6400E93558 /* TakeScreenshotCommand.cpp */,

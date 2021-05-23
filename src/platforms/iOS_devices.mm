@@ -13,6 +13,7 @@
 // and here: https://everymac.com/systems/apple/iphone/index-iphone-specs.html
 // and here: https://everymac.com/systems/apple/ipad/index-ipad-specs.html
 // and here: https://everymac.com/systems/apple/ipod/index-ipod-specs.html
+// and here: https://github.com/lmirosevic/GBDeviceInfo/blob/master/GBDeviceInfo/GBDeviceInfo_iOS.m
 
 // iPhone
 
@@ -498,6 +499,21 @@ void getStaticiOSInfoX86(chstr deviceName, april::SystemInfo& info)
 		else if (w == 2688)
 		{
 			info.deviceName = "iPhone 11 Pro Max";
+			info.displayDpi = 458;
+		}
+		else if (w == 2532)
+		{
+			info.deviceName = "iPhone 12";
+			info.displayDpi = 460;
+		}
+		else if (w == 2340)
+		{
+			info.deviceName = "iPhone 12 Mini";
+			info.displayDpi = 476;
+		}
+		else if (w == 2778)
+		{
+			info.deviceName = "iPhone 12 Pro Max";
 			info.displayDpi = 458;
 		}
 	}
